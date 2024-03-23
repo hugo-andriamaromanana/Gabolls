@@ -1,17 +1,32 @@
-import Title from '../atoms/Title';
+import Title from '../molecules/Title';
+import logo from '../assets/logo.svg';
+import DefaultButton from '../atoms/Buttons/DefaultButton';
+import PlayButton from '../molecules/PlayButton';
+import CountButton from '../molecules/CountButton';
 
 const Home = () => {
     return (
-        <div className='h-screen bg-tertiary'>
-            <div className='absolute top-28 right-1/2 bg-red-50'>
-                <button className='btn bg-primary'>test</button>
+        <div className='h-screen bg-background1 bg-no-repeat bg-cover bg-center bg-fixed'>
+            <div className='absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-32'>
+                <DefaultButton
+                    title='Rules'
+                    className='bg-gradient-to-r from-primary to-secondary'
+                />
             </div>
-            <div className='absolute top-1/3 left-1/4'>
-                <Title title='Gabolls' size='main' />
+            <img
+                className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-3/4 sm:size-1/4 md:size-1/4 lg:size-1/2'
+                src={logo}
+            />
+            <div className='absolute top-1/2 left-1/2'>
+                <Title title='GABOLLS' size='main' />
             </div>
-            <button className='btn absolute bottom-0 right-1/2 m-4 p-2 bg-primary'>
-                test
-            </button>
+            <div className='absolute top-3/4 left-1/2 -translate-x-1/2 translate-y-16'>
+                <div className='flex justify-between h-14 sm:h-24 md:h-28 lg:h-32'>
+                    <PlayButton />
+                    <div />
+                    <CountButton />
+                </div>
+            </div>
         </div>
     );
 };

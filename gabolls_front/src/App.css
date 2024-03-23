@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
+
+@layer base {
+    @font-face {
+        font-family: 'Shantell Sans Bold';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('Shantell Sans Bold')
+            url(./src/assets/fonts/ShantellSans-Bold.ttf) format('ttf');
+    }
+}
+
+@layer base {
+    @font-face {
+        font-family: 'Shantell Sans Bold Italic';
+        font-style: italic;
+        font-weight: 400;
+        font-display: swap;
+        src: local('Shantell Sans Bold Italic')
+            url(./src/assets/fonts/ShantellSans-BoldItalic.ttf) format('ttf');
+    }
+}
+
 @tailwind utilities;

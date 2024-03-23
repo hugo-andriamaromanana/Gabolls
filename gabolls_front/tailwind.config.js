@@ -10,6 +10,9 @@ export default {
                 tertiary: '#080808',
                 quartenary: '#E4DCDC',
                 quinary: '#151515'
+            },
+            backgroundImage: {
+                'background1': "url('/src/assets/background1.svg')"
             }
         },
         fontSize: {
