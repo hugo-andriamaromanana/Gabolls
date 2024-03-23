@@ -1,8 +1,11 @@
 from abc import ABC, abstractmethod
 from enum import Enum, auto
+from typing import Callable, Dict, List, Protocol
 from icecream import ic
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+from traitlets import default
 
 _SMALL_PENALTY = 25
 _BIG_PENALTY = 50
@@ -17,62 +20,83 @@ _COMEBACKS = {
     _BIG_COMEBACK_TRIGGER: _BIG_COMEBACK_SCORING
 }
 
-@dataclass
-class Scoring(ABC):
+class Scoring(Protocol):
     player_score: int
-    @abstractmethod
-    def get(self) -> int:
-        return -1
+    score: int
 
 class PenaltyType(Enum):
     Small = auto()
     Big = auto()
 
-_PENALTY_ScoringS = {
+class Scoring    
+
+
+_PENALTY_SCORINGS = {
     PenaltyType.Small: _SMALL_PENALTY,
     PenaltyType.Big: _BIG_PENALTY
 }
 
-
-@dataclass
-class PenaltyScoring(Scoring):
+@dataclass(frozen=True,unsafe_hash=True)
+class Result:
+    player_score: int
     penalty_type: PenaltyType
-    def get(self):
-        return self.player_score+_PENALTY_ScoringS[self.penalty_type]
+
+Scorer = Callable[[Scoring], Result]
+
+SCORING_MAP: Dict[Scorer,Result] = {
     
+}
+
+
+def _calc_score_with_comebacks(points: int) -> int:
+    if points in _COMEBACKS:
+        return _COMEBACKS[points]
+    return points 
+
 @dataclass
 class PointScoring(Scoring):
     points: int
     
-    def _update_scoring_with_comebacks(self) -> int:
-        if self.points in _COMEBACKS:
-            return _COMEBACKS[self.points]
-        return self.points 
-
-    def get(self) -> int:
+    @property
+    def score(self) -> int:
         self.points = self.player_score+self.points
-        return self._update_scoring_with_comebacks()
+        return _calc_score_with_comebacks(self.points)
     
 @dataclass
 class GaboScoring(Scoring):
     def get(self) -> int:
         return self.player_score
 
+
+class ScoringType(Enum):
+    Gabo = auto()
+    Point = auto()
+    BigPenalty = auto()
+    SmallPenalty = auto()
+    BigComeback = auto()
+    SmallComeback = auto()
+
 @dataclass
 class Player:
     score: int = 0
-
+    # score_table: Dict[ScoringType, int] = field(default_factory=dict)
+    
+@dataclass
+class Game:
+    players: List[Player] = field(default_factory=list)
+    
 
 def test_score():
     player = Player()
-    player.score = PointScoring(points=10, player_score=player.score).get()
-    player.score = PointScoring(points=10, player_score=player.score).get()
+    player.score = PointScoring(10, player.score).get()
+    player.score = PointScoring(10, player.score).get()
     ic(player.score)
     player.score = PenaltyScoring(penalty_type=PenaltyType.Big, player_score=player.score).get()
     ic(player.score)
     player.score = PointScoring(points=30, player_score=player.score).get()
     ic(player.score)
     player.score = PointScoring(points=10, player_score=player.score).get()
+
 
 if __name__ == "__main__":
     test_score()

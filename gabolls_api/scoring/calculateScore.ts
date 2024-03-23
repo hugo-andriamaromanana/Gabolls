@@ -16,3 +16,4 @@ export function testScore() {
     player.score = new GaboScoring(player.score).get();
     console.log(player.score)
 }
+

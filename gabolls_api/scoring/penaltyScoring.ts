@@ -20,5 +20,4 @@ export class PenaltyScoring implements Scoring {
     get(): number {
         return this.player_score + PENALTY_SCORES[this.penaltyType];
     }
-    stats()
 }
