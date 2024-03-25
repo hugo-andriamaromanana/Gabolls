@@ -15,6 +15,9 @@ export default {
                 'background1': "url('/src/assets/background1.svg')"
             }
         },
+        fontFamily: {
+            sans: ['"Shantell Sans Bold"', 'sans-serif']
+        },
         fontSize: {
             sm: ['14px', '20px'],
             md: ['16px', '24px'],

@@ -7,19 +7,7 @@
         font-style: normal;
         font-weight: 400;
         font-display: swap;
-        src: local('Shantell Sans Bold')
-            url(./src/assets/fonts/ShantellSans-Bold.ttf) format('ttf');
-    }
-}
-
-@layer base {
-    @font-face {
-        font-family: 'Shantell Sans Bold Italic';
-        font-style: italic;
-        font-weight: 400;
-        font-display: swap;
-        src: local('Shantell Sans Bold Italic')
-            url(./src/assets/fonts/ShantellSans-BoldItalic.ttf) format('ttf');
+        src: url(./src/assets/fonts/ShantellSans-Bold.woff2) format('woff2');
     }
 }
 
