@@ -16,10 +16,14 @@
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@vvo/tzdb": "^6.125.0",
         "axios": "^1.6.7",
+        "localforage": "^1.10.0",
+        "match-sorter": "^6.3.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hot-toast": "^2.4.1",
-        "react-query": "^3.39.3"
+        "react-query": "^3.39.3",
+        "react-router-dom": "^6.22.3",
+        "sort-by": "^1.2.0"
     },
     "devDependencies": {
         "@types/react": "^18.2.56",
