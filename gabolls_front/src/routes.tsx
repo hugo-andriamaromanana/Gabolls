@@ -20,22 +20,20 @@ const routes: RouteObject[] = [
         element: <Rules />
     },
     {
+        path: '/count/players',
+        element: <PlayerSelection />
+    },
+    {
+        path: '/count/scores',
+        element: <Scores />
+    },
+    {
+        path: '/count/player/:id',
+        element: <PointsEntry />
+    },
+    {
         path: '/count',
-        element: <GameSelection />,
-        children: [
-            {
-                path: '/count/players',
-                element: <PlayerSelection />
-            },
-            {
-                path: '/count/scores',
-                element: <Scores />
-            },
-            {
-                path: '/count/player/:id',
-                element: <PointsEntry />
-            }
-        ]
+        element: <GameSelection />
     },
     {
         path: '/play',
