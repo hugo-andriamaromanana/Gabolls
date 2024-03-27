@@ -1,7 +1,7 @@
 const GameSelection = () => {
     return (
-        <div>
-            <h1>Game Selection</h1>
+        <div className='h-screen bg-quinary'>
+            <h1>GAME SELECTION</h1>
         </div>
     );
 };

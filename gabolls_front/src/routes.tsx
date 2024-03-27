@@ -7,7 +7,7 @@ import Scores from './pages/count/Scores';
 import PointsEntry from './pages/count/PointsEntry';
 import Game from './pages/game/Game';
 import Rules from './pages/Rules';
-import GameSelection from './pages/count/GameSelection';
+// import GameSelection from './pages/count/GameSelection';
 
 const routes: RouteObject[] = [
     {
@@ -20,6 +20,10 @@ const routes: RouteObject[] = [
         element: <Rules />
     },
     {
+        path: '/count',
+        element: <PlayerSelection />
+    },
+    {
         path: '/count/players',
         element: <PlayerSelection />
     },
@@ -30,10 +34,6 @@ const routes: RouteObject[] = [
     {
         path: '/count/player/:id',
         element: <PointsEntry />
-    },
-    {
-        path: '/count',
-        element: <GameSelection />
     },
     {
         path: '/play',
