@@ -9,7 +9,7 @@ const DefaultInput = ({ placeholder, onChange }: DefaultInputProps) => {
         <input
             type='text'
             placeholder={placeholder}
-            className='input input-bordered w-full max-w-xs'
+            className='input input-bordered w-full max-w-xs text-quartenary'
             onChange={onChange}
         />
     );

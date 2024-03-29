@@ -7,7 +7,7 @@ const PLAYERS_STORAGE_KEY = 'COUNT_PLAYERS';
 const MAX_PLAYERS = 6;
 const MIN_PLAYERS = 3;
 
-type Player = {
+export type Player = {
     id: string;
     name: string;
 };
@@ -61,9 +61,12 @@ const PlayersForm = () => {
     };
 
     return (
-        <div className='flex flex-col w-full md:w-2/3 items-center'>
+        <div className='flex flex-col md:w-2/3 items-center'>
             {players?.map(player => (
-                <div key={player.id} className='group/input my-1 flex flex-row'>
+                <div
+                    key={player.id}
+                    className='group/input my-1 flex flex-row overflow-x-hidden'
+                >
                     <DefaultInput
                         key={player.id}
                         placeholder={player.name}
@@ -75,10 +78,10 @@ const PlayersForm = () => {
                         }
                     />
                     {players.indexOf(player) >= MIN_PLAYERS && (
-                        <div className='group/delete invisible w-0 group-hover/input:visible group-hover/input:w-3/12'>
+                        <div className='invisible w-0 group-hover/input:visible group-hover/input:w-3/12 overflow-hidden'>
                             <DefaultButton
                                 title='X'
-                                className='bg-gradient-to-r from-primary to-secondary w-fit'
+                                className='bg-gradient-to-r from-primary to-secondary w-fit hover:scale-90'
                                 onClick={() =>
                                     setPlayers(
                                         players.filter(p => p.id !== player.id)
