@@ -5,3 +5,5 @@ bruh.ts
 tests/*
 junk
 test*
+.env
+sqlalchemy_tests

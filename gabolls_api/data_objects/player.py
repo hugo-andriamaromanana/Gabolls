@@ -7,8 +7,18 @@ from .scoring import ScoringResult
 DEFAULT_STARTING_POINTS = 0
 DEFAULT_ENDING_POINTS = 120
 
-class Player(BaseModel):
+
+
+class Person(BaseModel):
+    id: str
     name: str
+
+class User(BaseModel):
+    human: Person
+    very_secret_password: str
+
+class Player(BaseModel):
+    human: Person
     scores: List[ScoringResult] = Field(default_factory=list)
 
     @property
