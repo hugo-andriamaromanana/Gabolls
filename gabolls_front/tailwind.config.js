@@ -9,7 +9,8 @@ export default {
                 secondary: '#632098',
                 tertiary: '#080808',
                 quartenary: '#E4DCDC',
-                quinary: '#151515'
+                quinary: '#151515',
+                senary: '#f7e7e5'
             },
             backgroundImage: {
                 'background1': "url('/src/assets/background1.svg')"
