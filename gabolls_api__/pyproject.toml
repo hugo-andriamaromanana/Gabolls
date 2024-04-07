@@ -15,10 +15,6 @@ sqlalchemy = "^2.0.29"
 psycopg2-binary = "^2.9.9"
 psycopg = "^3.1.18"
 psycopg2 = "^2.9.9"
-python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-python-decouple = "^3.8"
-bidict = "^0.23.1"
 
 
 [build-system]

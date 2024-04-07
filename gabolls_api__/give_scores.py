@@ -1,38 +1,37 @@
-from enum import Enum, auto
-
+from enum import Enum
+from typing import Dict
 from data_objects.player import Player
 from data_objects.scoring import ScoringResult, ScoringType
 
 _SMALL_PENALTY = 25
 _BIG_PENALTY = 50
 
+
+class PenaltyType(Enum):
+    Small = _SMALL_PENALTY
+    Big = _BIG_PENALTY
+
+
 _SMALL_COMEBACK_TRIGGER = 50
 _SMALL_COMEBACK_SCORING = 25
 _BIG_COMEBACK_TRIGGER = 100
 _BIG_COMEBACK_SCORING = 50
 
-_COMEBACKS = {
+_COMEBACKS: Dict[int, int] = {
     _SMALL_COMEBACK_TRIGGER: _SMALL_COMEBACK_SCORING,
     _BIG_COMEBACK_TRIGGER: _BIG_COMEBACK_SCORING,
 }
 
-
-class PenaltyType(Enum):
-    Small = auto()
-    Big = auto()
-
-
-_PENALTY_SCORINGS = {PenaltyType.Small: _SMALL_PENALTY, PenaltyType.Big: _BIG_PENALTY}
+_PENALTY_SCORING_MAP: Dict[PenaltyType, ScoringType] = {
+    PenaltyType.Small: ScoringType.SmallPenalty,
+    PenaltyType.Big: ScoringType.BigPenalty,
+}
 
 
 def _score_penalty(penalty_type: PenaltyType, player_score: int) -> ScoringResult:
     return ScoringResult(
-        score=player_score + _PENALTY_SCORINGS[penalty_type],
-        scoring_type=(
-            ScoringType.BigPenalty
-            if penalty_type == PenaltyType.Big
-            else ScoringType.SmallPenalty
-        ),
+        score=player_score + penalty_type.value,
+        scoring_type=_PENALTY_SCORING_MAP[penalty_type],
     )
 
 
