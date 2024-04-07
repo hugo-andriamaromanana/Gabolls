@@ -6,7 +6,7 @@ type BoardBackgroundProps = {
 
 function BoardBackground( {children}: BoardBackgroundProps) {
     return (
-        <div>
+        <div className="h-full bg-senary rounded-2xl overflow-y-auto">
             {children}
         </div>
     );

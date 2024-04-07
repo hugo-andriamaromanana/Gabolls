@@ -3,7 +3,7 @@ import RulesText from '../molecules/RulesText';
 
 const RulesBoard = () => {
     return (
-        <div className='bg-senary'>
+        <div className='mt-10'>
             <BoardBackground>
                 <RulesText />
             </BoardBackground>
