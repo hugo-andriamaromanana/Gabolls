@@ -1,4 +1,5 @@
 import SmallSubtitle from "../atoms/Subtitles/SmallSubtitle";
+import MiniCard from "../atoms/MiniCard";
 
 function RulesText() {
   return (
@@ -122,7 +123,22 @@ function RulesText() {
       <div className="flex flex-cols justify-center items-center pt-10 pb-4">
         <SmallSubtitle title="Poids des cartes" />
       </div>
-      <div>cards</div>
+      <div className="flex flex-wrap justify-center ">
+        <MiniCard icon="A" pts="1" />
+        <MiniCard icon="2" pts="2" />
+        <MiniCard icon="3" pts="3" />
+        <MiniCard icon="4" pts="4" />
+        <MiniCard icon="5" pts="5" />
+        <MiniCard icon="6" pts="6" />
+        <MiniCard icon="7" pts="7" />
+        <MiniCard icon="8" pts="8" />
+        <MiniCard icon="9" pts="9" />
+        <MiniCard icon="10" pts="10" />
+        <MiniCard icon="V" pts="11" />
+        <MiniCard icon="D" pts="12" />
+        <MiniCard icon="R" pts="13" />
+        <MiniCard icon="R" color="red" pts="0" />
+      </div>
       <div className="flex flex-cols justify-center items-center pt-10 pb-4">
         <SmallSubtitle title="Pouvoirs des cartes" />
       </div>
@@ -133,7 +149,34 @@ function RulesText() {
           cette carte.
         </p>
       </div>
-      <div>pouvoir cartes</div>
+      <div className="flex flex-cols justify-center">
+        <MiniCard
+          icon={"7"}
+          icon2="8"
+          text={
+            "Possibilité de regarder une de ses propres cartes, puis de la reposer toujours face cachée au même endroit"
+          }
+        />
+        <MiniCard
+          icon={"9"}
+          icon2="10"
+          text={
+            "Possibilité de regarder une des cartes d'un adversaire, puis de la reposer toujours face cachée au même endroit."
+          }
+        />
+        <MiniCard
+          icon={"V"}
+          text={
+            "Possibilité d'échanger à l'aveugle une de ses cartes avec celle d'un adversaire. Interdiction pour les joueurs de regarder les cartes ainsi échangées (possibilité ultérieure à l'aide du pouvoir des cartes 7 et 8). Aucun Gabo ne peut être annoncé avant que le joueur n'ait effectué son choix."
+          }
+        />
+        <MiniCard
+          icon={"D"}
+          text={
+            "Possibilité de regarder la carte d'un adversaire et possibilité de l'échanger avec l'une de ses cartes. Aucun Gabo ne peut être annoncé avant que le joueur n'ait effectué son choix."
+          }
+        />
+      </div>
       <div className="flex flex-cols justify-center items-center pt-10 pb-4">
         <SmallSubtitle title="Pénalité" />
       </div>
