@@ -15,12 +15,50 @@ sqlalchemy = "^2.0.29"
 psycopg2-binary = "^2.9.9"
 psycopg = "^3.1.18"
 psycopg2 = "^2.9.9"
-python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-python-decouple = "^3.8"
-bidict = "^0.23.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev]
+optional = true
+
+
+[tool.poetry.group.dev.dependencies]
+icecream = "*"
+
+[tool.poetry.group.ci.dependencies]
+black = { version = "*", allow-prereleases = true }
+isort = "*"
+ruff = "*"
+mypy = "*"
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+exclude = ["docs", "archive"]
+lint.select = ["E", "F", "W", "C90", "I", "D", "UP", "PD", "PL"]
+lint.ignore = ["D104", "D107", "D205", "D415"]
+lint.pydocstyle.convention = "google"
+lint.pylint.max-args = 8
+lint.mccabe.max-complexity = 5
+
+[tool.mypy]
+files = ["gabolls_api"]
+strict = true
+namespace_packages = true
+explicit_package_bases = true
+disallow_untyped_calls = false
+
+
+[[tool.mypy.overrides]]
+module = [
+    "icecream.*",
+]
+ignore_missing_imports = true
