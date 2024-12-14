@@ -15,3 +15,4 @@ class Rank(StrEnum):
     JACK = auto()
     QUEEN = auto()
     KING = auto()
+    NONE = auto()

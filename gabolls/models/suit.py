@@ -6,3 +6,4 @@ class Suit(StrEnum):
     SPADE = auto()
     DIAMOND = auto()
     CLUB = auto()
+    NONE = auto()
