@@ -1,9 +1,6 @@
+from gabolls.models.errors import RoundEndNotImplemented
 from gabolls.models.round_end import RoundEnd, RoundEndType
 from gabolls.models.rules import Rules
-
-
-class RoundEndNotImplemented(NotImplementedError):
-    pass
 
 
 def infer_score_from_round_end(
