@@ -1,9 +1,7 @@
 from os import environ
 from typing import Any
 
-
-class EnvVarNotFound(ValueError):
-    pass
+from gabolls.models.errors import EnvVarNotFound
 
 
 def unpack_env_var(key: str) -> Any:
