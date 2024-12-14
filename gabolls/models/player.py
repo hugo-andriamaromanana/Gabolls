@@ -1,10 +1,9 @@
 from dataclasses import dataclass
-from gabolls.models.action import ActionType
-from gabolls.models.deck import Deck
 from gabolls.models.hand import Hand
 from gabolls.models.profile import Profile
 from gabolls.models.rules import Rules
 from gabolls.models.score import Score
+from gabolls.models.turn import Turn
 
 
 @dataclass
@@ -13,12 +12,17 @@ class Player:
     score: Score
     hand: Hand
     rules: Rules
-    actions_history: list[ActionType]
+    turns: list[Turn]
     declared_win: bool = False
-
-    def draw(self, deck: Deck, number_of_cards: int) -> None:
-        deck.draw(number_of_cards)
 
     @property
     def lost(self) -> bool:
         return self.score.points > self.rules.round_win_cap
+
+    @property
+    def true_score(self) -> int:
+        return sum(card.value for card in self.hand.cards)
+
+    @property
+    def is_eligible(self) -> bool:
+        return self.true_score <= self.rules.round_win_cap
