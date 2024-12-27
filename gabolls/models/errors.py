@@ -16,3 +16,7 @@ class CardNotInPlayerHand(IndexError):
 
 class NoTypeError(ValueError):
     pass
+
+
+class CannotDrawFromEmptyDeck(ValueError):
+    pass
