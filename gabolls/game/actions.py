@@ -12,7 +12,6 @@ from gabolls.models.player import Player
 
 
 async def ask_in_hand_decision(card: Card) -> InHandDecisionType:
-    card_view = card.view()
     raise NotImplementedError
 
 
