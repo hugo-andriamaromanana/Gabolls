@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from gabolls.models.player import Player
 from gabolls.models.rank import Rank
 from gabolls.models.spell import SPELL_RANKS
 from gabolls.models.suit import Suit
@@ -14,8 +15,11 @@ class Card:
     def has_spell(self) -> bool:
         return self.rank in SPELL_RANKS
 
-    def view(self) -> "Card":
-        return self
+
+@dataclass
+class CardView:
+    card: Card
+    owner: Player | None
 
 
 BLANK_CARD = Card(Rank.NONE, Suit.NONE, 0)

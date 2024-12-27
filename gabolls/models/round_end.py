@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import StrEnum, auto
 
 
@@ -11,6 +12,7 @@ class RoundEndType(StrEnum):
     LARGE_COMEBACK = auto()
 
 
+@dataclass
 class RoundEnd:
-    points: int
-    type = type
+    new_points: int
+    type: type
