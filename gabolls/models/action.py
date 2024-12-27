@@ -51,6 +51,11 @@ class InHandDiscardToPile(PlayerAction):
 
 
 @dataclass
+class SkipAction(PlayerAction):
+    pass
+
+
+@dataclass
 class InHandSwapAction(PlayerAction):
     decision_type: InHandDecisionType
     owner_card: Card
