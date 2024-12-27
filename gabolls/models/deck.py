@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from random import Random
-from gabolls.models.card import BLANK_CARD, Card
+
+from gabolls.models.card import BLANK_CARD, Card, CardView
+from gabolls.models.errors import CannotDrawFromEmptyDeck
 from gabolls.models.rank import Rank
 from gabolls.models.suit import Suit
 
@@ -17,12 +19,11 @@ class Deck:
         return draw
 
     @property
-    def view_top_card(self) -> Card:
+    def top_card_view(self) -> CardView:
         if not self.is_empty:
-            card_view = self.cards[0].view()
-            return card_view
+            return CardView(self.cards[0], None)
         else:
-            return BLANK_CARD
+            return CardView(BLANK_CARD, None)
 
     def add_to_top(self, card: Card) -> None:
         self.cards.insert(0, card)
@@ -31,7 +32,10 @@ class Deck:
         Random(self.seed).shuffle(self.cards)
 
     def draw_top_card(self) -> Card:
-        return self.cards.pop(0)
+        top_card = self.cards.pop(0)
+        if self.is_empty or not isinstance(top_card, Card):
+            raise CannotDrawFromEmptyDeck
+        return top_card
 
     @property
     def is_empty(self) -> bool:
@@ -56,17 +60,20 @@ STANDARD_RANK_SCORES: dict[Rank, int] = {
 BLACK_KING_RANK = 13
 RED_KING_RANK = 0
 
+BLACK_KINGS = [
+    Card(Rank.KING, Suit.CLUB, BLACK_KING_RANK),
+    Card(Rank.KING, Suit.SPADE, BLACK_KING_RANK),
+    Card(Rank.KING, Suit.DIAMOND, RED_KING_RANK),
+    Card(Rank.KING, Suit.HEART, RED_KING_RANK),
+]
 
-def create_standard_cards() -> list[Card]:
-    cards = [
-        Card(Rank.KING, Suit.CLUB, BLACK_KING_RANK),
-        Card(Rank.KING, Suit.SPADE, BLACK_KING_RANK),
-        Card(Rank.KING, Suit.DIAMOND, RED_KING_RANK),
-        Card(Rank.KING, Suit.HEART, RED_KING_RANK),
-    ]
-    # creating base deck
+
+def _create_standard_cards() -> list[Card]:
+    deck = []
     for rank, value in STANDARD_RANK_SCORES.items():
         for suit in Suit:
             card = Card(rank, suit, value)
-            cards.append(card)
-    return cards
+    return deck + BLACK_KINGS
+
+
+STANDARD_CARDS: list[Card] = _create_standard_cards()
