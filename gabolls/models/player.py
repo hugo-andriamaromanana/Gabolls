@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+from gabolls.models.card import CardView
 from gabolls.models.hand import Hand
 from gabolls.models.profile import Profile
 from gabolls.models.rules import Rules
 from gabolls.models.score import Score
-from gabolls.models.turn import Turn
 
 
 @dataclass
@@ -12,8 +12,9 @@ class Player:
     score: Score
     hand: Hand
     rules: Rules
-    turns: list[Turn]
-    declared_win: bool = False
+
+    def view_card(self, card: CardView) -> None:
+        self.hand.card_views.append(card)
 
     @property
     def lost(self) -> bool:
