@@ -72,7 +72,7 @@ def _create_standard_cards() -> list[Card]:
     deck = []
     for rank, value in STANDARD_RANK_SCORES.items():
         for suit in Suit:
-            card = Card(rank, suit, value)
+            deck.append(Card(rank, suit, value))
     return deck + BLACK_KINGS
 
 
