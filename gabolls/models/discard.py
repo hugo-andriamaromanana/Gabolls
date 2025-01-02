@@ -32,7 +32,7 @@ class DiscardRequests:
         for request in self.queue:
             result_type = (
                 DiscardResultType.FAIL
-                if request.card.rank != round.deck.view_top_card.rank
+                if request.card.rank != round.deck.top_card_view.card.rank
                 else DiscardResultType.SUCESS
             )
             response = DiscardResponse(request.card, request.player, result_type)
