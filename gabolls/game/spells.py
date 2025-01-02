@@ -21,7 +21,7 @@ async def ask_player_self_card(player: Player) -> Card:
     raise NotImplementedError
 
 
-async def select_player_card(player: Player, other_players: list[Player]) -> PlayerCard:
+async def select_player_card(player: Player, other_players: set[Player]) -> PlayerCard:
     raise NotImplementedError
 
 
