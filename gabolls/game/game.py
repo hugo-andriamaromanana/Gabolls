@@ -1,6 +1,7 @@
 from loguru import logger
 from gabolls.game.actions import ask_player_in_hand_decision
 from gabolls.game.decisions import DrawDecisionType
+from gabolls.game.scoring import infer_round_end_by_type, infer_round_end_type_by_score
 from gabolls.models.action import InHandDiscardToPile, InHandSwapAction
 from gabolls.models.deck import STANDARD_CARDS, Deck
 from gabolls.models.discard import DiscardRequests, DiscardResponse, DiscardResultType
@@ -9,7 +10,7 @@ from gabolls.models.game import Game
 from gabolls.models.lobby import Lobby
 from gabolls.models.player import Player
 from gabolls.models.round import Round
-from gabolls.models.round_end import RoundEndType
+from gabolls.models.round_end import RoundEnd, RoundEndType
 from gabolls.models.rules import Rules
 from gabolls.models.seed import Seed
 from gabolls.game.spells import (
@@ -23,7 +24,7 @@ async def ask_player_draw_type(player: Player) -> DrawDecisionType:
     raise NotImplementedError
 
 
-def create_game(players: list[Player], rules: Rules, seed_source: int) -> Game:
+def create_game(players: set[Player], rules: Rules, seed_source: int) -> Game:
     seed = Seed(seed_source, 0)
     lobby = Lobby(players)
     game = Game(lobby, seed, rules, [])
@@ -61,8 +62,10 @@ def create_round(
 
     declared_winners: list[Player] = []
 
+    player_scores = {player: 0 for player in lobby.players}
+
     round = Round(
-        round_number, lobby, discard_pile, deck, lobby.next_player, declared_winners
+        round_number, lobby, discard_pile, deck, lobby.next_player, declared_winners, player_scores
     )
 
     # player draw hand size cards each
@@ -78,15 +81,88 @@ async def prompt_user_counter_proposal(players: list[Player]) -> bool:
     raise NotImplementedError 
 
 
-async def infer_round_end_from_round(player: Player, round: Round, declared_wins: list[Player], first_to_declare: Player) -> RoundEndType:
-    if player in declared_wins:
-        if player.is_eligible:
-            return RoundEndType.SAFE
-        else:
-            return RoundEndType.SMALL_PENALTY
-    elif (not player.is_eligible) and (player in declared_wins):
-        return RoundEndType.SMALL_PENALTY
-    elif 
+async def find_players_end_rounds(player: Player, round: Round, declared_wins: list[Player], counter_win_called: bool, rules: Rules) -> list[RoundEnd]:
+    round_ends: list[RoundEnd] = []
+
+    lowest_score = min(player.score for player in round.players_declared_win)
+
+    normal_count: set[Player] = set()
+    small_penalties: set[Player] = set(player for player in round.players_declared_win if not player.is_eligible)
+    normal_winner: set[Player] = set(player for player in round.players_declared_win if player.is_eligible) if not counter_win_called else set()
+
+    if counter_win_called:
+        counter_winners: set[Player] = set(player for player in round.players_declared_win if player.score == lowest_score)
+        big_penalties: set[Player] = set(player for player in round.players_declared_win if (player not in counter_winners) or (player not in small_penalties))
+        normal_count
+
+    normal_count: set[Player] = set()
+
+    #"deck empty case" or "no win declared" case
+    if round.deck.is_empty or len(declared_wins) < 1:
+        normal_count: set[Player] = round.lobby.players
+        
+    
+    elif counter_win_called:
+        lowest_score = min(player.score for player in round.players_declared_win)
+        counter_winners: set[Player] = set(player for player in round.players_declared_win if player.score == lowest_score)
+        big_penalties: set[Player] = set(player for player in round.players_declared_win if (player not in counter_winners) or (player not in small_penalties))
+        remaining_players: set[Player] = ((round.lobby.players - winners) - losers) - saves
+
+    else:
+        winners = set(player for player in round.players_declared_win if player.is_eligible)
+        saves = round.lobby.players - winners
+        remaining_players = (round.lobby.players - saves) - winners
+    
+    # counter
+    elif counter_win_called:
+        lowest_score = min(player.score for player in round.players_declared_win)
+
+        winners = set(player for player in round.players_declared_win if player.score == lowest_score)
+        for winner in winners:
+            round_score = round.player_scores[winner]
+            round_end = infer_round_end_by_type(winner, round_score, RoundEndType.COUNTER, rules)
+            round_ends.append(round_end)
+        
+        saves = set(player for player in round.players_declared_win if not player.is_eligible)
+        for save in saves:
+            round_score = round.player_scores[save]
+            round_end = infer_round_end_by_type(save,round_score, RoundEndType.SMALL_PENALTY, rules)
+            round_ends.append(round_end)
+
+        losers = set(player for player in round.players_declared_win if (player not in winners) or (player not in saves))
+        for loser in losers:
+            round_score = round.player_scores[loser]
+            round_end = infer_round_end_by_type(loser,round_score, RoundEndType.LARGE_PENALTY, rules)
+            round_ends.append(round_end)
+
+        remaining_players = ((round.lobby.players - winners) - losers) - saves
+        for player in remaining_players:
+            round_score = round.player_scores[player]
+            round_end_type = infer_round_end_type_by_score(player.score, round_score, rules)
+            round_end = infer_round_end_by_type(player, round_score, round_end_type, rules)
+            round_ends.append(round_end)
+        return round_ends
+
+    else:
+        winners = set(player for player in round.players_declared_win if player.is_eligible)
+        for winner in winners:
+            round_score = round.player_scores[winner]
+            round_end = infer_round_end_by_type(winner, round_score, RoundEndType.COUNTER, rules)
+            round_ends.append(round_end)
+
+        saves = round.lobby.players - winners
+        for save in saves:
+            round_score = round.player_scores[save]
+            round_end = infer_round_end_by_type(save,round_score, RoundEndType.SMALL_PENALTY, rules)
+            round_ends.append(round_end)
+        
+        remaining_players = (round.lobby.players - saves) - winners
+        for player in remaining_players:
+            round_score = round.player_scores[player]
+            round_end_type = infer_round_end_type_by_score(player.score, round_score, rules)
+            round_end = infer_round_end_by_type(player, round_score, round_end_type, rules)
+            round_ends.append(round_end)
+        return round_ends
 
 
 
@@ -148,12 +224,12 @@ async def play_round(game: Game) -> Game:
 
         #resolve scores, counter phase
         counter_win_called = await prompt_user_counter_proposal(round.players_declared_win)
+        round_ends = solve_end_rounds(round) 
         if counter_win_called:
-            lowest_score = min(player.score.points for player in round.players_declared_win)
-            winners = [player for player in round.players_declared_win if player.score.points == lowest_score]
-            losers = [player for player in round.players_declared_win if player not in winners]
+
         else:
-            winners: 
+            winners = []
+
 
 
         end_rounds = create_end_rounds()
@@ -161,7 +237,7 @@ async def play_round(game: Game) -> Game:
     return game
 
 
-#     discard_responses = await listen_quick_throws(discard_requests, round)
+# discard_responses = await listen_quick_throws(discard_requests, round)
 # round.resolve_discards(discard_responses)
 
 # peak_action = PeakCardAction(
