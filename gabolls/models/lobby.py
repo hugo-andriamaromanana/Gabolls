@@ -6,14 +6,14 @@ from gabolls.models.player import Player
 
 @dataclass
 class Lobby:
-    players: list[Player]
+    players: set[Player]
 
     def __post_init__(self) -> None:
         self.cycle = cycle(self.players)
 
     @property
     def player_points(self) -> list[int]:
-        return [player.score.points for player in self.players]
+        return [player.score for player in self.players]
 
     @property
     def leading_score(self) -> int:
@@ -21,11 +21,7 @@ class Lobby:
 
     @property
     def leaders(self) -> list[Player]:
-        return [
-            player
-            for player in self.players
-            if player.score.points == self.leading_score
-        ]
+        return [player for player in self.players if player.score == self.leading_score]
 
     @property
     def next_player(self) -> Player:

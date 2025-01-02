@@ -6,3 +6,6 @@ from uuid import UUID
 class Profile:
     name: str
     id: UUID
+
+    def __hash__(self) -> int:
+        return hash(self.id)
