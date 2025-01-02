@@ -1,6 +1,6 @@
 from gabolls.models.errors import RoundEndNotImplemented
 from gabolls.models.player import Player
-from gabolls.models.round_end import RoundEnd, RoundEndType
+from gabolls.models.round_end import RoundEnd, RoundEndScenario, RoundEndType
 from gabolls.models.rules import Rules
 
 
@@ -21,7 +21,11 @@ def infer_round_end_type_by_score(
 
 
 def infer_round_end_by_type(
-    player: Player, hand_score: int, round_end_type: RoundEndType, rules: Rules
+    player: Player,
+    hand_score: int,
+    round_end_type: RoundEndType,
+    rules: Rules,
+    scenario: RoundEndScenario,
 ) -> RoundEnd:
 
     if round_end_type is RoundEndType.SCORING:
@@ -54,5 +58,5 @@ def infer_round_end_by_type(
             f"Round end type: {round_end_type} not implemented."
         )
 
-    round_end = RoundEnd(player, new_points, round_end_type)
+    round_end = RoundEnd(player, new_points, round_end_type, scenario)
     return round_end

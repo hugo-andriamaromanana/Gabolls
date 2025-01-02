@@ -16,8 +16,17 @@ class RoundEndType(StrEnum):
     LARGE_COMEBACK = auto()
 
 
+class RoundEndScenario(StrEnum):
+    EMPTY_DECK = auto()
+    EMPTY_HAND = auto()
+    COUNTER_SUCESS = auto()
+    COUNTER_NULL = auto()
+    CLASSIC = auto()
+
+
 @dataclass
 class RoundEnd:
     player: Player
     new_points: int
     type: RoundEndType
+    scenario: RoundEndScenario

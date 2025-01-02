@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from gabolls.models.deck import Deck
+from gabolls.models.errors import PlayerNotFoundInRoundError
 from gabolls.models.lobby import Lobby
 from gabolls.models.player import Player
 
@@ -13,6 +14,14 @@ class Round:
     current_player: Player
     players_declared_win: list[Player]
     player_scores: dict[Player, int]
+
+    def get_player_score(self, player: Player) -> int:
+        score = self.player_scores.get(player)
+        if score is None:
+            raise PlayerNotFoundInRoundError(
+                f"Player {player} was not found in the current round"
+            )
+        return score
 
     @property
     def is_over(self) -> bool:

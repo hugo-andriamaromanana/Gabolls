@@ -20,3 +20,7 @@ class NoTypeError(ValueError):
 
 class CannotDrawFromEmptyDeck(ValueError):
     pass
+
+
+class PlayerNotFoundInRoundError(ValueError):
+    pass
