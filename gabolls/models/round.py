@@ -12,6 +12,7 @@ class Round:
     deck: Deck
     current_player: Player
     players_declared_win: list[Player]
+    player_scores: dict[Player, int]
 
     @property
     def is_over(self) -> bool:
