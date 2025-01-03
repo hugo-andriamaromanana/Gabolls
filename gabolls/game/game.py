@@ -64,7 +64,13 @@ def create_round(
     player_scores = {player: 0 for player in lobby.players}
 
     round = Round(
-        round_number, lobby, discard_pile, deck, lobby.next_player, declared_winners, player_scores
+        round_number,
+        lobby,
+        discard_pile,
+        deck,
+        lobby.next_player,
+        declared_winners,
+        player_scores,
     )
 
     # player draw hand size cards each
@@ -73,8 +79,10 @@ def create_round(
 
     return round
 
+
 async def get_declared_wins() -> list[Player]:
     raise NotImplementedError
+
 
 async def prompt_user_counter_proposal(players: list[Player]) -> bool:
     raise NotImplementedError
@@ -84,7 +92,7 @@ async def play_round(game: Game) -> Game:
 
     round_count = 0
     discard_requests = DiscardRequests([])
-    declared_wins: set[Player] = set()
+    declared_wins: list[Player] = []
 
     while not game.is_over:
 
@@ -136,20 +144,13 @@ async def play_round(game: Game) -> Game:
             responses = discard_requests.resolve(round)
             round = await solve_discard_from_reponse(responses, round)
 
-        if 
-        #resolve scores, counter phase
-        counter_win_called = await prompt_user_counter_proposal(round.players_declared_win)
+        # resolve scores, counter phase
+        counter_win_called = await prompt_user_counter_proposal(
+            round.players_declared_win
+        )
         round_end_scenario = determine_scoring_scenario(round, counter_win_called)
-        round_ends = find_player_end_rounds(round, declared_wins, round_end_scenario, game.rules)
+        round_ends = find_player_end_rounds(
+            round, declared_wins, round_end_scenario, game.rules
+        )
 
     return game
-
-
-# discard_responses = await listen_quick_throws(discard_requests, round)
-# round.resolve_discards(discard_responses)
-
-# peak_action = PeakCardAction(
-
-#     round.current_player, ActionType.PEAK, holding_card, PeakOwner.DECK
-
-# )

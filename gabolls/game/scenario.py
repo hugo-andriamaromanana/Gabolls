@@ -7,7 +7,7 @@ from gabolls.models.rules import Rules
 
 
 def determine_scoring_scenario(
-    round: Round,counter_win_called: bool
+    round: Round, counter_win_called: bool
 ) -> RoundEndScenario:
 
     if any(player.hand.is_empty for player in round.lobby.players):
@@ -15,13 +15,15 @@ def determine_scoring_scenario(
 
     elif round.deck.is_empty:
         return RoundEndScenario.EMPTY_DECK
-    
+
     elif round.players_declared_win:
         first_player = round.players_declared_win[0]
         if not first_player.is_eligible:
             return RoundEndScenario.DICKHEAD
         else:
-            raise RoundEndNotImplemented("Round end is nor EMPTY_DECK nor EMPTY_HAND yet not players declared win")
+            raise RoundEndNotImplemented(
+                "Round end is nor EMPTY_DECK nor EMPTY_HAND yet not players declared win"
+            )
 
     elif counter_win_called:
         lowest_score = min(player.score for player in round.players_declared_win)
@@ -119,10 +121,10 @@ def find_player_end_rounds(
             + leftover_players_round_ends
             + small_penalty_end_rounds
         )
-    
+
     elif scenario is RoundEndScenario.DICKHEAD:
         dickhead = declared_wins[0]
-        winners = (declared_wins_set - small_penalty_players)
+        winners = declared_wins_set - small_penalty_players
         winners.remove(dickhead)
         others = players - winners
         others.remove(dickhead)
@@ -132,23 +134,15 @@ def find_player_end_rounds(
             dickhead, round_score, RoundEndType.DIFFERED_PENALTY, scenario, rules
         )
         winners_round_ends = _create_round_ends_for_group(
-            round,
-            winners,
-            RoundEndType.SAFE,
-            scenario,
-            rules
+            round, winners, RoundEndType.SAFE, scenario, rules
         )
         others_round_ends = _create_round_ends_for_group(
-            round,
-            others,
-            RoundEndType.SAVED_FROM_DICKHEAD,
-            scenario,
-            rules
+            round, others, RoundEndType.SAVED_FROM_DICKHEAD, scenario, rules
         )
         round_ends = winners_round_ends + others_round_ends
         round_ends.append(dickhead_round_end)
-        return round_ends 
-    
+        return round_ends
+
     elif scenario is RoundEndScenario.COUNTER_NULL:
         counter_winners = declared_wins_set - small_penalty_players
         counter_losers = declared_wins_set - (small_penalty_players | counter_winners)
