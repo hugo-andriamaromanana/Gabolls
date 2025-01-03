@@ -37,6 +37,9 @@ def infer_round_end_by_type(
         else:
             new_points = player.score + hand_score
 
+    if round_end_type is RoundEndType.SAVED_FROM_DICKHEAD:
+        new_points = player.score + min(rules.small_penalty_points, hand_score)
+
     elif round_end_type is RoundEndType.DIFFERED_PENALTY:
         new_points = player.score - rules.round_win_cap + rules.small_penalty_points
 

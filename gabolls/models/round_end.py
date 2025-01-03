@@ -15,9 +15,11 @@ class RoundEndType(StrEnum):
     SMALL_COMEBACK = auto()
     LARGE_COMEBACK = auto()
     EMPTY_HAND = auto()
+    SAVED_FROM_DICKHEAD = auto()
 
 
 class RoundEndScenario(StrEnum):
+    DICKHEAD = auto()
     EMPTY_DECK = auto()
     EMPTY_HAND = auto()
     COUNTER_SUCCESS = auto()
