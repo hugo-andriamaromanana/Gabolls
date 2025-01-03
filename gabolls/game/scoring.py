@@ -1,4 +1,4 @@
-from gabolls.models.errors import RoundEndNotImplemented, ScoringNotSolved
+from gabolls.models.errors import RoundEndNotImplemented
 from gabolls.models.player import Player
 from gabolls.models.round_end import RoundEnd, RoundEndScenario, RoundEndType
 from gabolls.models.rules import Rules
@@ -29,7 +29,7 @@ def infer_round_end_by_type(
 ) -> RoundEnd:
 
     if round_end_type in RoundEndType.SCORING:
-        scoring_type = solve_scoring_type(hand_score,player.score, rules)
+        scoring_type = solve_scoring_type(hand_score, player.score, rules)
         if scoring_type is RoundEndType.LARGE_COMEBACK:
             new_points = rules.large_comeback_bonus
         elif scoring_type is RoundEndType.SMALL_COMEBACK:
@@ -50,7 +50,7 @@ def infer_round_end_by_type(
         RoundEndType.SAFE,
         RoundEndType.COUNTER,
         RoundEndType.NEUTRAL_COUNTER,
-        RoundEndType.EMPTY_HAND
+        RoundEndType.EMPTY_HAND,
     ):
         new_points = player.score
 

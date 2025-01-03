@@ -118,27 +118,15 @@ def find_player_end_rounds(
         others = players - (counter_winners | counter_losers)
 
         counter_winners_round_ends = _create_round_ends_for_group(
-            round,
-            counter_winners,
-            RoundEndType.COUNTER,
-            scenario,
-            rules
+            round, counter_winners, RoundEndType.COUNTER, scenario, rules
         )
 
         counter_losers_round_ends = _create_round_ends_for_group(
-            round,
-            counter_losers,
-            RoundEndType.LARGE_PENALTY,
-            scenario,
-           rules 
+            round, counter_losers, RoundEndType.LARGE_PENALTY, scenario, rules
         )
 
         others_round_ends = _create_round_ends_for_group(
-            round,
-            others,
-            RoundEndType.SCORING,
-            scenario,
-            rules
+            round, others, RoundEndType.SCORING, scenario, rules
         )
 
         return (
@@ -147,34 +135,22 @@ def find_player_end_rounds(
             + others_round_ends
             + small_penalty_end_rounds
         )
-    
+
     elif scenario is RoundEndScenario.COUNTER_NULL:
         counter_winners = declared_wins - small_penalty_players
         counter_losers = declared_wins - (small_penalty_players | counter_winners)
         others = players - (counter_winners | counter_losers)
 
         counter_winners_round_ends = _create_round_ends_for_group(
-            round,
-            counter_winners,
-            RoundEndType.NEUTRAL_COUNTER,
-            scenario,
-            rules
+            round, counter_winners, RoundEndType.NEUTRAL_COUNTER, scenario, rules
         )
 
         counter_losers_round_ends = _create_round_ends_for_group(
-            round,
-            counter_losers,
-            RoundEndType.LARGE_PENALTY,
-            scenario,
-           rules 
+            round, counter_losers, RoundEndType.LARGE_PENALTY, scenario, rules
         )
 
         others_round_ends = _create_round_ends_for_group(
-            round,
-            others,
-            RoundEndType.SCORING,
-            scenario,
-            rules
+            round, others, RoundEndType.SCORING, scenario, rules
         )
 
         return (
@@ -183,32 +159,20 @@ def find_player_end_rounds(
             + others_round_ends
             + small_penalty_end_rounds
         )
-    
+
     elif scenario is RoundEndScenario.CLASSIC:
         winners = declared_wins - small_penalty_players
         others = players - (winners | small_penalty_players)
 
         winners_end_rounds = _create_round_ends_for_group(
-            round,
-            winners,
-            RoundEndType.SAFE,
-            scenario,
-            rules
+            round, winners, RoundEndType.SAFE, scenario, rules
         )
 
         others_round_end = _create_round_ends_for_group(
-            round,
-            others,
-            RoundEndType.SCORING,
-            scenario,
-            rules
+            round, others, RoundEndType.SCORING, scenario, rules
         )
 
-        return (
-            winners_end_rounds
-            + others_round_end
-            + small_penalty_end_rounds
-        )
+        return winners_end_rounds + others_round_end + small_penalty_end_rounds
 
     else:
         raise RoundEndNotImplemented
