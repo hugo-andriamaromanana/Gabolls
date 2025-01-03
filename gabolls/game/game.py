@@ -1,7 +1,9 @@
-from gabolls.game.round import create_round
+from gabolls.game.round import create_round, play_round
 from gabolls.models.game import Game
 from gabolls.models.lobby import Lobby
 from gabolls.models.player import Player
+from gabolls.models.round import Round
+from gabolls.models.round_end import RoundEnd
 from gabolls.models.rules import Rules
 from gabolls.models.seed import Seed
 
@@ -13,16 +15,21 @@ def create_game(players: set[Player], rules: Rules, seed_source: int) -> Game:
     return game
 
 
-async def play_round(game: Game) -> Game:
+async def play_game(game: Game) -> GameResume:
 
     round_count = 0
+    player_end_rounds: dict[Player, list[RoundEnd]] = {
+        player: [] for player in game.lobby.players
+    }
 
     while not game.is_over:
 
         deck_seed = game.seed.next()
-        round = create_round(
+        round: Round = create_round(
             game.lobby, deck_seed, game.rules.start_hand_size, round_count
         )
-        round_ends = await play_round(game)
+        round_ends: list[RoundEnd] = await play_round(round, game.rules)
+        for round_end in round_ends:
+            player_end_rounds[round_end.player].append(round_end)
 
     return game
