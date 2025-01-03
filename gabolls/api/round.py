@@ -1,6 +1,6 @@
 from gabolls.models.player import Player
 from gabolls.game.decisions import DrawDecisionType, InHandDecisionType
-from gabolls.models.action import (
+from gabolls.models.player_action import (
     ActionType,
     InHandDiscardToPile,
     InHandSwapAction,

@@ -1,3 +1,4 @@
+from typing import TypeAlias
 from loguru import logger
 from gabolls.api.round import (
     ask_player_draw_type,
@@ -8,6 +9,7 @@ from gabolls.game.decisions import DrawDecisionType
 from gabolls.models.deck import STANDARD_CARDS, Deck
 from gabolls.models.discard import DiscardRequests, DiscardResponse, DiscardResultType
 from gabolls.models.errors import NoDecisionsTaken
+from gabolls.models.game_action import GameAction
 from gabolls.models.lobby import Lobby
 from gabolls.models.player import Player
 from gabolls.models.round import Round
@@ -18,18 +20,23 @@ from gabolls.game.spells import (
     play_spell,
 )
 from gabolls.game.scenario import determine_scoring_scenario, find_player_end_rounds
-from gabolls.models.action import InHandDiscardToPile, InHandSwapAction
+from gabolls.models.player_action import DrawFromDeckAction, DrawFromDiscardAction, InHandDiscardToPile, InHandSwapAction, PlayerAction
 from gabolls.models.rules import Rules
 
 
+RoundActions: TypeAlias = GameAction | PlayerAction
+
+
 async def solve_discard_from_reponse(
-    responses: list[DiscardResponse], round: Round
+    responses: list[DiscardResponse], round: Round, actions: list[RoundActions]
 ) -> Round:
     for response in responses:
 
         if response.result is DiscardResultType.FAIL:
             punishment_card = round.deck.draw_top_card()
             response.player.hand.add(punishment_card)
+
+            
 
         elif response.result is DiscardResultType.SUCESS:
             response.player.hand.discard(response.card)
@@ -74,6 +81,7 @@ def create_round(
 
 async def play_round(round: Round, rules: Rules) -> list[RoundEnd]:
 
+    round_actions: list[RoundActions] = []
     discard_requests = DiscardRequests([])
     declared_wins: list[Player] = []
 
@@ -83,10 +91,23 @@ async def play_round(round: Round, rules: Rules) -> list[RoundEnd]:
 
         # drawing phase
         draw_decision = await ask_player_draw_type(player)
+
         if draw_decision is DrawDecisionType.FROM_DECK:
-            drawn_card = round.deck.draw_top_card()
+
+            deck_card = round.deck.draw_top_card()
+
+            deck_draw_action = DrawFromDeckAction(deck_card)
+            player_action = PlayerAction(player, draw_decision, deck_draw_action)
+            round_actions.append(player_action)
+
         elif draw_decision is DrawDecisionType.FROM_DISCARD:
-            drawn_card = round.discard_pile.draw_top_card()
+
+            discard_card = round.discard_pile.draw_top_card()
+
+            discard_draw_action = DrawFromDiscardAction(discard_card)
+            player_action = PlayerAction(player, draw_decision, discard_draw_action)
+            round_actions.append(player_action)
+
         else:
             raise NoDecisionsTaken
 

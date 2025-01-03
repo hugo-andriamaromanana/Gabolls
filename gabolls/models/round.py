@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from gabolls.models.player_action import PlayerAction
 from gabolls.models.deck import Deck
 from gabolls.models.errors import PlayerNotFoundInRoundError
 from gabolls.models.lobby import Lobby
@@ -14,6 +15,7 @@ class Round:
     current_player: Player
     players_declared_win: list[Player]
     player_scores: dict[Player, int]
+    player_actions: list[PlayerAction]
 
     def get_player_score(self, player: Player) -> int:
         score = self.player_scores.get(player)
