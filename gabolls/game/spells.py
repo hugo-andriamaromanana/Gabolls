@@ -45,31 +45,33 @@ def infer_spell_type_from_rank(rank: Rank) -> SpellType:
 async def play_spell(player: Player, spell_type: SpellType, round: Round) -> Round:
 
     if spell_type is SpellType.BLIND_EXCHANGE:
-        swap_target: PlayerCard = await select_player_card(player, round.lobby.players)
-        self_card: Card = await ask_player_self_card(player)
+        blind_swap_target: PlayerCard = await select_player_card(player, round.lobby.players)
+        blind_self_card: Card = await ask_player_self_card(player)
         await player_exchange_cards(
-            player, self_card, swap_target.player, swap_target.card
+            player, blind_self_card, blind_swap_target.player, blind_swap_target.card
         )
+        return round
 
     elif spell_type is SpellType.VIEW_EXCHANGE:
-        swap_target: PlayerCard = await select_player_card(player, round.lobby.players)
-        card_view = CardView(swap_target.card, swap_target.player)
-        player.view_card(card_view)
+        view_swap_target: PlayerCard = await select_player_card(player, round.lobby.players)
+        view_card_view = CardView(view_swap_target.card, view_swap_target.player)
+        player.view_card(view_card_view)
         exchange_valid = await ask_player_exchange_valid(player)
         if exchange_valid:
-            self_card: Card = await ask_player_self_card(player)
+            view_self_card: Card = await ask_player_self_card(player)
             await player_exchange_cards(
-                player, self_card, swap_target.player, swap_target.card
+                player, view_self_card, view_swap_target.player, view_swap_target.card
             )
+        return round
 
     elif spell_type is SpellType.SELF_PEAK:
-        self_card: Card = await ask_player_self_card(player)
-        card_view = CardView(self_card, player)
-        player.view_card(card_view)
+        peak_self_card: Card = await ask_player_self_card(player)
+        peak_card_view = CardView(peak_self_card, player)
+        player.view_card(peak_card_view)
 
     elif spell_type is SpellType.OTHER_PEAK:
-        peak_target = await select_player_card(player, round.lobby.players)
-        card_view = CardView(peak_target.card, peak_target.player)
+        other_peak_target = await select_player_card(player, round.lobby.players)
+        card_view = CardView(other_peak_target.card, other_peak_target.player)
         player.view_card(card_view)
 
     else:
