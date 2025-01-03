@@ -14,12 +14,13 @@ class RoundEndType(StrEnum):
     DIFFERED_PENALTY = auto()
     SMALL_COMEBACK = auto()
     LARGE_COMEBACK = auto()
+    EMPTY_HAND = auto()
 
 
 class RoundEndScenario(StrEnum):
     EMPTY_DECK = auto()
     EMPTY_HAND = auto()
-    COUNTER_SUCESS = auto()
+    COUNTER_SUCCESS = auto()
     COUNTER_NULL = auto()
     CLASSIC = auto()
 

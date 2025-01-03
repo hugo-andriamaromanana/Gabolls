@@ -24,3 +24,6 @@ class CannotDrawFromEmptyDeck(ValueError):
 
 class PlayerNotFoundInRoundError(ValueError):
     pass
+
+class ScoringNotSolved(NotImplementedError):
+    pass
