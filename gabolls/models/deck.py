@@ -67,11 +67,13 @@ BLACK_KINGS = [
     Card(Rank.KING, Suit.HEART, RED_KING_RANK),
 ]
 
+STANDARD_SUITS = [Suit.CLUB, Suit.DIAMOND, Suit.HEART, Suit.SPADE]
+
 
 def _create_standard_cards() -> list[Card]:
     deck = []
     for rank, value in STANDARD_RANK_SCORES.items():
-        for suit in Suit:
+        for suit in STANDARD_SUITS:
             deck.append(Card(rank, suit, value))
     return deck + BLACK_KINGS
 
