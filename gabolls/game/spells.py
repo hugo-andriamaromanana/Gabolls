@@ -45,15 +45,18 @@ def infer_spell_type_from_rank(rank: Rank) -> SpellType:
 async def play_spell(player: Player, spell_type: SpellType, round: Round) -> Round:
 
     if spell_type is SpellType.BLIND_EXCHANGE:
-        blind_swap_target: PlayerCard = await select_player_card(player, round.lobby.players)
+        blind_swap_target: PlayerCard = await select_player_card(
+            player, round.lobby.players
+        )
         blind_self_card: Card = await ask_player_self_card(player)
         await player_exchange_cards(
             player, blind_self_card, blind_swap_target.player, blind_swap_target.card
         )
-        return round
 
     elif spell_type is SpellType.VIEW_EXCHANGE:
-        view_swap_target: PlayerCard = await select_player_card(player, round.lobby.players)
+        view_swap_target: PlayerCard = await select_player_card(
+            player, round.lobby.players
+        )
         view_card_view = CardView(view_swap_target.card, view_swap_target.player)
         player.view_card(view_card_view)
         exchange_valid = await ask_player_exchange_valid(player)
@@ -62,7 +65,6 @@ async def play_spell(player: Player, spell_type: SpellType, round: Round) -> Rou
             await player_exchange_cards(
                 player, view_self_card, view_swap_target.player, view_swap_target.card
             )
-        return round
 
     elif spell_type is SpellType.SELF_PEAK:
         peak_self_card: Card = await ask_player_self_card(player)
