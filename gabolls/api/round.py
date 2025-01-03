@@ -1,4 +1,5 @@
-from gabolls.game.decisions import InHandDecisionType
+from gabolls.models.player import Player
+from gabolls.game.decisions import DrawDecisionType, InHandDecisionType
 from gabolls.models.action import (
     ActionType,
     InHandDiscardToPile,
@@ -8,7 +9,6 @@ from gabolls.models.action import (
 )
 from gabolls.models.card import Card
 from gabolls.models.errors import NoDecisionsTaken
-from gabolls.models.player import Player
 
 
 async def ask_in_hand_decision(card: Card) -> InHandDecisionType:
@@ -40,4 +40,16 @@ async def swap_hand_with_card(
     player: Player, card: Card
 ) -> ViewExchangeCardAction | BlindExchangeCardAction:
 
+    raise NotImplementedError
+
+
+async def get_declared_wins() -> list[Player]:
+    raise NotImplementedError
+
+
+async def prompt_user_counter_proposal(players: list[Player]) -> bool:
+    raise NotImplementedError
+
+
+async def ask_player_draw_type(player: Player) -> DrawDecisionType:
     raise NotImplementedError
