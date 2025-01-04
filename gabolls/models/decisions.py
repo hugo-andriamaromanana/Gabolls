@@ -40,8 +40,7 @@ class ViewExchangeCardDecision:
 
 @dataclass
 class PeakDecision:
-    self_card: Card
-    other_player_card: PlayerCard
+    player_card: PlayerCard
 
 
 class SkipViewExchangeDecision:
@@ -67,9 +66,11 @@ class CallWinDecision:
 class CallCounterDecision:
     pass
 
+
 @dataclass
-class DiscardFromHand:
+class DiscardFromHandDecision:
     card: Card
+
 
 PlayerDecisons: TypeAlias = (
     InHandDiscardDecision
@@ -83,5 +84,5 @@ PlayerDecisons: TypeAlias = (
     | DrawFromDiscardDecision
     | CallWinDecision
     | CallCounterDecision
-    | DiscardFromHand
+    | DiscardFromHandDecision
 )

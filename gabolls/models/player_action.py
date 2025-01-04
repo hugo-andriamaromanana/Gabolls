@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from typing import TypeAlias
 from gabolls.models.card import Card
-from gabolls.models.decisions import DrawDecisionType, PlayerDecisons
+from gabolls.models.decisions import PlayerDecisons
+from gabolls.models.game_action import GameAction
 from gabolls.models.player import Player
 from gabolls.models.player_card import PlayerCard
+from gabolls.models.spell import SpellType
 
 
 @dataclass
@@ -15,18 +17,20 @@ class PeakCardAction:
 class DrawFromDeckAction:
     card: Card
 
+
 @dataclass
 class DrawFromDiscardAction:
     card: Card
 
+
 @dataclass
-class InHandDiscardToPile:
+class InHandDiscardToPileAction:
     card: Card
 
 
 @dataclass
-class SkipAction:
-    pass
+class SkipSpellAction:
+    spell_type: SpellType
 
 
 @dataclass
@@ -37,33 +41,42 @@ class InHandSwapAction:
 
 @dataclass
 class BlindExchangeCardAction:
-    player_card: Card
-    other_player: Player
-    other_player_card: Card
+    self_card: Card
+    other_player_card: PlayerCard
 
 
 @dataclass
 class ViewExchangeCardAction:
     player_card: Card
-    other_player: Player
-    other_player_card: Card
+    other_player_card: PlayerCard
 
 
 @dataclass
-class DrawPunishementCard:
+class DrawPunishementCardAction:
     card: Card
+
+
+@dataclass
+class DiscardFromHandAction:
+    card: Card
+
+
+class CounterAction:
+    pass
 
 
 PlayerActions: TypeAlias = (
     PeakCardAction
     | BlindExchangeCardAction
     | InHandSwapAction
-    | SkipAction
-    | InHandDiscardToPile
+    | SkipSpellAction
+    | InHandDiscardToPileAction
     | DrawFromDeckAction
     | DrawFromDiscardAction
     | ViewExchangeCardAction
-    | DrawPunishementCard
+    | DrawPunishementCardAction
+    | DiscardFromHandAction
+    | CounterAction
 )
 
 
@@ -72,3 +85,6 @@ class PlayerAction:
     player: Player
     decision: PlayerDecisons
     action: PlayerActions
+
+
+RoundActions: TypeAlias = GameAction | PlayerAction

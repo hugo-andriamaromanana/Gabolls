@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from enum import StrEnum, auto
 
-from gabolls.models.player_action import PlayerAction
 from gabolls.models.player import Player
 
 
@@ -34,4 +33,3 @@ class RoundEnd:
     new_points: int
     type: RoundEndType
     scenario: RoundEndScenario
-    actions: list[PlayerAction]
