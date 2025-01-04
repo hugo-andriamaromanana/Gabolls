@@ -1,5 +1,6 @@
 from loguru import logger
 from gabolls.api.round import (
+    ask_is_spell_played,
     ask_player_draw_decision,
     ask_player_in_hand_decision,
     prompt_user_counter_proposal,
@@ -20,7 +21,6 @@ from gabolls.models.lobby import Lobby
 from gabolls.models.player import Player
 from gabolls.models.round import Round
 from gabolls.game.spells import (
-    ask_is_spell_played,
     infer_spell_type_from_rank,
     play_spell,
 )

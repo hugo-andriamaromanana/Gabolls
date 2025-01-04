@@ -1,5 +1,10 @@
 from loguru import logger
 
+from gabolls.api.round import (
+    ask_player_exchange_valid,
+    ask_player_self_card,
+    select_player_card,
+)
 from gabolls.models.card import Card, CardView
 from gabolls.models.decisions import (
     BlindExchangeCardDecision,
@@ -18,22 +23,6 @@ from gabolls.models.player_card import PlayerCard
 from gabolls.models.rank import Rank
 from gabolls.models.round import Round
 from gabolls.models.spell import SPELL_CARDS, SpellType
-
-
-async def ask_player_exchange_valid(player: Player) -> bool:
-    raise NotImplementedError
-
-
-async def ask_is_spell_played(player: Player, spell_type: SpellType) -> bool:
-    raise NotImplementedError
-
-
-async def ask_player_self_card(player: Player) -> Card:
-    raise NotImplementedError
-
-
-async def select_player_card(player: Player, other_players: set[Player]) -> PlayerCard:
-    raise NotImplementedError
 
 
 async def player_exchange_cards(
