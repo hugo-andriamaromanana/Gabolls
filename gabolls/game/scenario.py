@@ -143,7 +143,7 @@ def find_player_end_rounds(
         round_ends.append(dickhead_round_end)
         return round_ends
 
-    elif scenario is RoundEndScenario.COUNTER_NULL:
+    elif scenario is RoundEndScenario.COUNTER_SUCCESS:
         counter_winners = declared_wins_set - small_penalty_players
         counter_losers = declared_wins_set - (small_penalty_players | counter_winners)
         others = players - (counter_winners | counter_losers)
