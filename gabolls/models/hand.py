@@ -35,3 +35,7 @@ class Hand:
     @property
     def is_empty(self) -> bool:
         return len(self.cards) == 0
+
+    @property
+    def short(self) -> str:
+        return f"{".".join(card.short for card in self.cards)}/{".".join(card.short for card in self.card_views)}"
