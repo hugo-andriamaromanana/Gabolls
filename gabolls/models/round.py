@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Any
 from gabolls.models.action import RoundAction
 from gabolls.models.deck import Deck
 from gabolls.models.errors import PlayerNotFoundInRoundError

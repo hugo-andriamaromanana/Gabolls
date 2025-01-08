@@ -10,4 +10,3 @@ RoundActions: TypeAlias = GameAction | PlayerAction
 @dataclass
 class RoundAction:
     action: RoundActions
-
