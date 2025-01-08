@@ -41,6 +41,10 @@ class Deck:
     def is_empty(self) -> bool:
         return len(self.cards) > 0
 
+    @property
+    def short(self) -> dict[str, list[str] | int]:
+        return {"seed": self.seed, "cards": [card.short for card in self.cards]}
+
 
 STANDARD_RANK_SCORES: dict[Rank, int] = {
     Rank.ACE: 1,
