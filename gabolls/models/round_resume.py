@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from gabolls.models.deck import Deck
 from gabolls.models.lobby import Lobby
-from gabolls.models.player_action import RoundActions
+from gabolls.models.action import RoundActions
 from gabolls.models.round_end import RoundEnd, RoundEndScenario
 
 
