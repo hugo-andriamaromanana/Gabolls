@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from gabolls.models.deck import Deck
 from gabolls.models.lobby import Lobby
-from gabolls.models.action import RoundActions
+from gabolls.models.action import RoundAction
 from gabolls.models.round_end import RoundEnd, RoundEndScenario
 
 
@@ -9,6 +9,6 @@ from gabolls.models.round_end import RoundEnd, RoundEndScenario
 class RoundResume:
     deck: Deck
     lobby: Lobby
-    actions: list[RoundActions]
+    actions: list[RoundAction]
     scenario: RoundEndScenario
     round_ends: list[RoundEnd]

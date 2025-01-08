@@ -6,6 +6,7 @@ from gabolls.api.round import (
     prompt_user_counter_proposal,
 )
 from gabolls.game.discard import solve_discard
+from gabolls.models.action import RoundAction
 from gabolls.models.decisions import (
     CallCounterDecision,
     DrawDecisionType,
@@ -36,7 +37,6 @@ from gabolls.models.player_action import (
 )
 from gabolls.models.round_resume import RoundResume
 from gabolls.models.rules import Rules
-from gabolls.models.player_action import RoundActions
 
 
 def create_round(
@@ -48,7 +48,7 @@ def create_round(
     discard_pile: Deck = Deck([], 0)
     declared_winners: list[Player] = []
     player_scores = {player: 0 for player in lobby.players}
-    round_actions: list[RoundActions] = []
+    round_actions: list[RoundAction] = []
 
     round = Round(
         round_number,
@@ -101,7 +101,8 @@ async def play_round(round: Round, rules: Rules) -> RoundResume:
         else:
             raise NoDecisionsTaken
 
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
 
         # clear discard
         round = solve_discard(round, discard_requests)
@@ -122,7 +123,8 @@ async def play_round(round: Round, rules: Rules) -> RoundResume:
             player_action = PlayerAction(
                 player, player_in_hand_swap_decision, player_in_hand_swap_action
             )
-            round.actions.append(player_action)
+            round_action = RoundAction(player_action)
+            round.actions.append(round_action)
 
         elif isinstance(in_hand_decision, InHandDiscardToPileAction):
             round.discard_pile.add_to_top(in_hand_decision.card)
@@ -136,7 +138,8 @@ async def play_round(round: Round, rules: Rules) -> RoundResume:
             player_action = PlayerAction(
                 player, player_in_hand_discard_decision, player_in_hand_discard_action
             )
-            round.actions.append(player_action)
+            round_action = RoundAction(player_action)
+            round.actions.append(round_action)
 
             if in_hand_decision.card.has_spell:
                 spell_type = infer_spell_type_from_rank(in_hand_decision.card.rank)
@@ -148,7 +151,8 @@ async def play_round(round: Round, rules: Rules) -> RoundResume:
                     player_action = PlayerAction(
                         player, SkipSpellDecision(), SkipSpellAction(spell_type)
                     )
-                    round.actions.append(player_action)
+                    round_action = RoundAction(player_action)
+                    round.actions.append(round_action)
                     logger.info(f"Player: {player} skipped spell: {spell_type}")
         else:
             raise NoDecisionsTaken
@@ -164,7 +168,8 @@ async def play_round(round: Round, rules: Rules) -> RoundResume:
         player_action = PlayerAction(
             counter_called, CallCounterDecision(), CounterAction()
         )
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
 
     round_end_scenario = determine_scoring_scenario(round, counter_win_called)
     round_ends = find_player_end_rounds(round, declared_wins, round_end_scenario, rules)

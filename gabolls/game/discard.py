@@ -1,3 +1,4 @@
+from gabolls.models.action import RoundAction
 from gabolls.models.decisions import DiscardFromHandDecision
 from gabolls.models.discard import DiscardRequests, DiscardResultType
 from gabolls.models.errors import NoDecisionsTaken
@@ -35,5 +36,7 @@ def solve_discard(round: Round, discard_requests: DiscardRequests) -> Round:
         else:
             raise NoDecisionsTaken
 
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
+
     return round

@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import TypeAlias
 from gabolls.models.card import Card
 from gabolls.models.decisions import PlayerDecisons
-from gabolls.models.game_action import GameAction
 from gabolls.models.player import Player
 from gabolls.models.player_card import PlayerCard
 from gabolls.models.spell import SpellType
@@ -85,6 +84,3 @@ class PlayerAction:
     player: Player
     decision: PlayerDecisons
     action: PlayerActions
-
-
-RoundActions: TypeAlias = GameAction | PlayerAction

@@ -1,19 +1,21 @@
 from dataclasses import dataclass
-from enum import StrEnum, auto
 from typing import TypeAlias
 
-from gabolls.models.game import Game
+
+class RoundOverAction:
+    pass
 
 
-class GameActionType(StrEnum):
-    ROUND_OVER = auto()
+GameActions: TypeAlias = RoundOverAction
 
 
-GameActions: TypeAlias = GameActionType
+SHORT_GAME_ACTIONS: dict[type[GameActions], str] = {RoundOverAction: "ROA"}
 
 
 @dataclass
 class GameAction:
-    game: Game
     action: GameActions
-    type: GameActionType
+
+    @property
+    def short(self) -> str:
+        return SHORT_GAME_ACTIONS[type(self.action)]

@@ -5,6 +5,7 @@ from gabolls.api.round import (
     ask_player_self_card,
     select_player_card,
 )
+from gabolls.models.action import RoundAction
 from gabolls.models.card import Card, CardView
 from gabolls.models.decisions import (
     BlindExchangeCardDecision,
@@ -62,7 +63,8 @@ async def play_spell(
         )
         blind_swap_action = BlindExchangeCardAction(blind_self_card, blind_swap_target)
         player_action = PlayerAction(player, blind_swap_decision, blind_swap_action)
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
 
     elif spell_type is SpellType.VIEW_EXCHANGE:
         view_swap_target: PlayerCard = await select_player_card(
@@ -76,7 +78,8 @@ async def play_spell(
         other_peak_decision = PeakDecision(other_player_card)
         other_peak_action = PeakCardAction(other_player_card)
         player_action = PlayerAction(player, other_peak_decision, other_peak_action)
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
 
         exchange_valid = await ask_player_exchange_valid(player)
         if exchange_valid:
@@ -91,7 +94,8 @@ async def play_spell(
                 self_player_card.card, view_swap_target
             )
             player_action = PlayerAction(player, view_swap_decision, view_swap_action)
-            round.actions.append(player_action)
+            round_action = RoundAction(player_action)
+            round.actions.append(round_action)
 
     elif spell_type is SpellType.SELF_PEAK:
         peak_self_card = await ask_player_self_card(player)
@@ -102,7 +106,8 @@ async def play_spell(
         self_peak_decision = PeakDecision(self_player_card)
         self_peak_action = PeakCardAction(self_player_card)
         player_action = PlayerAction(player, self_peak_decision, self_peak_action)
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
 
     elif spell_type is SpellType.OTHER_PEAK:
         other_peak_target = await select_player_card(player, round.lobby.players)
@@ -114,7 +119,8 @@ async def play_spell(
         other_peak_decision = PeakDecision(other_player_card)
         other_peak_action = PeakCardAction(other_player_card)
         player_action = PlayerAction(player, other_peak_decision, other_peak_action)
-        round.actions.append(player_action)
+        round_action = RoundAction(player_action)
+        round.actions.append(round_action)
 
     else:
         raise NotImplementedError
