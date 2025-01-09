@@ -10,7 +10,7 @@ from gabolls.models.player_action import (
 from gabolls.models.round import Round
 
 
-def solve_discard(round: Round, discard_requests: DiscardRequests) -> Round:
+async def solve_discard(round: Round, discard_requests: DiscardRequests) -> Round:
     responses = discard_requests.resolve(round)
     for response in responses:
         if response.result is DiscardResultType.FAIL:
