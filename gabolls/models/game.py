@@ -1,17 +1,21 @@
 from dataclasses import dataclass
 
 from gabolls.models.lobby import Lobby
+from gabolls.models.phase import GamePhase
 from gabolls.models.round import Round
 from gabolls.models.rules import Rules
 from gabolls.models.seed import Seed
 
 
 @dataclass
-class Game:
+class GameState:
     lobby: Lobby
+    round_nb: int
     seed: Seed
     rules: Rules
+    round: Round
     rounds: list[Round]
+    game_phase: GamePhase
 
     @property
     def is_over(self) -> bool:

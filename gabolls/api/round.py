@@ -11,10 +11,11 @@ from gabolls.models.card import Card
 from gabolls.models.errors import NoDecisionsTaken
 from gabolls.models.player_card import PlayerCard
 from gabolls.models.spell import SpellType
+from gabolls.models.spell_response import SpellResponse
 
 
-async def ask_in_hand_decision(card: Card) -> InHandDecisionType:
-    raise NotImplementedError
+async def ask_in_hand_decision(player: Player, card: Card) -> InHandDecisionType:
+    raise NoDecisionsTaken
 
 
 async def ask_player_draw_decision(player: Player) -> DrawDecisionType:
@@ -34,7 +35,7 @@ async def player_select_other_player_card(
 async def ask_player_in_hand_decision(
     player: Player, card: Card
 ) -> InHandDiscardDecision | InHandSwapDecision:
-    decision = await ask_in_hand_decision(card)
+    decision = await ask_in_hand_decision(player, card)
 
     if decision is InHandDecisionType.DISCARD:
         return InHandDiscardDecision(card)
@@ -49,6 +50,7 @@ async def ask_player_in_hand_decision(
 async def swap_hand_with_card(
     player: Player, card: Card
 ) -> ViewExchangeCardDecision | BlindExchangeCardDecision:
+
     raise NotImplementedError
 
 
@@ -64,7 +66,7 @@ async def ask_player_exchange_valid(player: Player) -> bool:
     raise NotImplementedError
 
 
-async def ask_is_spell_played(player: Player, spell_type: SpellType) -> bool:
+async def ask_is_spell_played(player: Player, spell_type: SpellType) -> SpellResponse:
     raise NotImplementedError
 
 

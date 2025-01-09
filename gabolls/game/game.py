@@ -1,38 +1,24 @@
-from gabolls.game.round import create_round, play_round
-from gabolls.models.game import Game
-from gabolls.models.game_resume import GameResume
+from gabolls.game.round import create_round
+from gabolls.models.game import GameState
 from gabolls.models.lobby import Lobby
+from gabolls.models.phase import GamePhase, GamePhaseType
 from gabolls.models.player import Player
 from gabolls.models.round import Round
-from gabolls.models.round_resume import RoundResume
 from gabolls.models.rules import Rules
 from gabolls.models.seed import Seed
 
 
-def create_game(players: set[Player], rules: Rules, seed_source: int) -> Game:
+def create_start_game_state(
+    players: set[Player], rules: Rules, seed_source: int, first_player: Player
+) -> GameState:
     seed = Seed(seed_source, 0)
     lobby = Lobby(players)
-    game = Game(lobby, seed, rules, [])
+    deck_seed = seed.next()
+    round_nb = 0
+    rounds: list[Round] = []
+    round = create_round(
+        lobby, deck_seed, rules.start_hand_size, round_nb, first_player
+    )
+    start_game_phase = GamePhase(first_player, GamePhaseType.DRAWING)
+    game = GameState(lobby, round_nb, seed, rules, round, rounds, start_game_phase)
     return game
-
-
-async def play_game(game: Game) -> GameResume:
-
-    round_count = 0
-    round_resumes: list[RoundResume] = []
-
-    while not game.is_over:
-
-        deck_seed = game.seed.next()
-        round: Round = create_round(
-            game.lobby, deck_seed, game.rules.start_hand_size, round_count
-        )
-        round_resume = await play_round(round, game.rules)
-
-        for round_end in round_resume.round_ends:
-            round_end.player.score = round_end.new_points
-
-        round_resumes.append(round_resume)
-
-    game_resume = GameResume(round_resumes)
-    return game_resume

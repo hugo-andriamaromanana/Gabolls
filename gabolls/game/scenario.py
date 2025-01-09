@@ -16,8 +16,8 @@ def determine_scoring_scenario(
     elif round.deck.is_empty:
         return RoundEndScenario.EMPTY_DECK
 
-    elif round.players_declared_win:
-        first_player = round.players_declared_win[0]
+    elif round.declared_wins:
+        first_player = round.declared_wins[0]
         if not first_player.is_eligible:
             return RoundEndScenario.DICKHEAD
         else:
@@ -26,11 +26,9 @@ def determine_scoring_scenario(
             )
 
     elif counter_win_called:
-        lowest_score = min(player.score for player in round.players_declared_win)
+        lowest_score = min(player.score for player in round.declared_wins)
         counter_winners = set(
-            player
-            for player in round.players_declared_win
-            if player.score == lowest_score
+            player for player in round.declared_wins if player.score == lowest_score
         )
         if len(counter_winners) > 1:
             return RoundEndScenario.COUNTER_NULL

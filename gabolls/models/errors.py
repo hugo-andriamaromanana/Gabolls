@@ -28,3 +28,7 @@ class PlayerNotFoundInRoundError(ValueError):
 
 class ScoringNotSolved(NotImplementedError):
     pass
+
+
+class UnclearedSpellType(ValueError):
+    pass
