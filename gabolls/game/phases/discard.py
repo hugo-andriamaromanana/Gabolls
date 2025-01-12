@@ -1,6 +1,6 @@
 from gabolls.models.action import RoundAction
 from gabolls.models.decisions import DiscardFromHandDecision
-from gabolls.models.discard import DiscardRequests, DiscardResultType
+from gabolls.models.discard import DiscardRequest, DiscardResponse, DiscardResultType
 from gabolls.models.errors import NoDecisionsTaken
 from gabolls.models.player_action import (
     DiscardFromHandAction,
@@ -10,8 +10,23 @@ from gabolls.models.player_action import (
 from gabolls.models.round import Round
 
 
-async def solve_discard(round: Round, discard_requests: DiscardRequests) -> Round:
-    responses = discard_requests.resolve(round)
+def resolve_discards(
+    discards: list[DiscardRequest], round: Round
+) -> list[DiscardResponse]:
+    responses: list[DiscardResponse] = []
+    for request in discards:
+        result_type = (
+            DiscardResultType.FAIL
+            if request.card.rank != round.deck.top_card_view.card.rank
+            else DiscardResultType.SUCESS
+        )
+        response = DiscardResponse(request.card, request.player, result_type)
+        responses.append(response)
+    return responses
+
+
+async def solve_discard(round: Round, discard_requests: list[DiscardRequest]) -> Round:
+    responses = resolve_discards(discard_requests, round)
     for response in responses:
         if response.result is DiscardResultType.FAIL:
             punishment_card = round.deck.draw_top_card()

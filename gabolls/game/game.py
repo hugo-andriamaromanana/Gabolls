@@ -1,23 +1,36 @@
-from gabolls.game.game_state import update_game_state
+from collections.abc import Iterable
 from gabolls.models.action import RoundAction
 from gabolls.models.card import BLANK_CARD
 from gabolls.models.deck import STANDARD_CARDS, Deck
 from gabolls.models.discard import DiscardRequests
 from gabolls.models.game import GameState
+from gabolls.models.hand import Hand
 from gabolls.models.lobby import Lobby
 from gabolls.models.phase import GamePhase, GamePhaseType
 from gabolls.models.player import Player
+from gabolls.models.profile import Profile
 from gabolls.models.round import Round
 from gabolls.models.rules import Rules
 from gabolls.models.seed import Seed
 from gabolls.models.spell_response import SpellResponse
 
 
+def create_new_lobby(
+    profiles: Iterable[Profile], first_player_id: int, rules: Rules
+) -> Lobby:
+    players = set()
+    for profile in profiles:
+        start_hand = Hand([], [])
+        player = Player(profile, 0, start_hand, rules)
+        players.add(player)
+    lobby = Lobby(first_player_id, players)
+    return lobby
+
+
 def create_start_game_state(
-    players: set[Player], rules: Rules, seed_source: int, first_player_id: int
+    lobby: Lobby, rules: Rules, seed_source: int, first_player_id: int
 ) -> GameState:
     seed = Seed(seed_source, 0)
-    lobby = Lobby(first_player_id, players)
     deck_seed = seed.next()
     round_nb = 0
     rounds: list[Round] = []
@@ -59,15 +72,3 @@ def create_round(
         False,
     )
     return round
-
-
-async def play_game(
-    lobby: Lobby, rules: Rules, seed: Seed, first_player_id: int
-) -> None:
-
-    game_state = create_start_game_state(
-        lobby.players, rules, seed.source, first_player_id
-    )
-
-    while not game_state.is_over:
-        game_state = await update_game_state(game_state)

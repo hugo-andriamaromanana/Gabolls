@@ -40,3 +40,6 @@ class Player:
             "score": self.score,
             "hand": self.hand.short,
         }
+
+    def __hash__(self) -> int:
+        return self.profile.id

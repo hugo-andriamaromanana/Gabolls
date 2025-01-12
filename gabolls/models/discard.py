@@ -3,7 +3,6 @@ from enum import StrEnum, auto
 from typing import Any
 from gabolls.models.card import Card
 from gabolls.models.player import Player
-from gabolls.models.round import Round
 
 
 class DiscardResultType(StrEnum):
@@ -31,18 +30,6 @@ class DiscardResponse:
 @dataclass
 class DiscardRequests:
     queue: list[DiscardRequest]
-
-    def resolve(self, round: Round) -> list[DiscardResponse]:
-        responses: list[DiscardResponse] = []
-        for request in self.queue:
-            result_type = (
-                DiscardResultType.FAIL
-                if request.card.rank != round.deck.top_card_view.card.rank
-                else DiscardResultType.SUCESS
-            )
-            response = DiscardResponse(request.card, request.player, result_type)
-            responses.append(response)
-        return responses
 
     def add(self, request: DiscardRequest) -> None:
         self.queue.append(request)

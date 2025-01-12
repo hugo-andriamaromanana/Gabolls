@@ -29,7 +29,7 @@ class Rules:
         }
 
 
-DEFAULT_RULES = {
+DEFAULT_RULES_DICT = {
     "starting_view": 2,
     "start_hand_size": 4,
     "loss_cap": 120,
@@ -41,3 +41,5 @@ DEFAULT_RULES = {
     "small_comeback_trigger": 50,
     "large_comeback_trigger": 100,
 }
+
+DEFAULT_RULES = Rules(**DEFAULT_RULES_DICT)

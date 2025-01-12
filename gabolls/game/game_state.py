@@ -48,7 +48,7 @@ async def update_game_state(game_state: GameState) -> GameState:
 
     elif game_state.game_phase.type is GamePhaseType.DISCARDING_0:
         game_state.round = await solve_discard(
-            game_state.round, game_state.round.discard_requests
+            game_state.round, game_state.round.discard_requests.queue
         )
         game_state.round.discard_requests.clear()
         game_state.game_phase.type = GamePhaseType.IN_HAND
@@ -79,7 +79,7 @@ async def update_game_state(game_state: GameState) -> GameState:
 
     elif game_state.game_phase.type is GamePhaseType.DISCARDING_1:
         game_state.round = await solve_discard(
-            game_state.round, game_state.round.discard_requests
+            game_state.round, game_state.round.discard_requests.queue
         )
         game_state.round.discard_requests.clear()
         game_state.game_phase.type = GamePhaseType.CHECK_ROUND_OVER
