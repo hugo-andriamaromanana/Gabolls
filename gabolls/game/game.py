@@ -1,8 +1,9 @@
 from collections.abc import Iterable
 
+from gabolls.game.cards import create_standard_cards
 from gabolls.models.action import RoundAction
 from gabolls.models.card import BLANK_CARD
-from gabolls.models.deck import STANDARD_CARDS, Deck
+from gabolls.models.deck import Deck
 from gabolls.models.discard import DiscardRequests
 from gabolls.models.game import GameState
 from gabolls.models.hand import Hand
@@ -40,7 +41,7 @@ def create_start_game_state(
     rounds: list[Round] = []
     round = create_round(lobby, deck_seed, round_nb, first_player_id)
     start_game_phase = GamePhase(
-        lobby.get_player_by_id(first_player_id), GamePhaseType.DRAWING
+        lobby.get_player_by_id(first_player_id), GamePhaseType.NEW_ROUND
     )
     game = GameState(lobby, round_nb, seed, rules, round, rounds, start_game_phase)
     return game
@@ -53,7 +54,7 @@ def create_round(
     first_player_id: int,
 ) -> Round:
 
-    deck = Deck(STANDARD_CARDS, deck_seed)
+    deck = Deck(create_standard_cards(), deck_seed)
     deck.shuffle()
     discard_pile: Deck = Deck([], 0)
     declared_winners: list[Player] = []
