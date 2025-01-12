@@ -7,7 +7,7 @@ from gabolls.models.player_card import PlayerCard
 from gabolls.models.spell import SpellType
 
 
-@dataclass
+@dataclass(slots=True)
 class PeakCardAction:
     player_card: PlayerCard
 
@@ -16,7 +16,7 @@ class PeakCardAction:
         return {"action_name": "PeakCardAction", "player_card": self.player_card}
 
 
-@dataclass
+@dataclass(slots=True)
 class DrawFromDeckAction:
     card: Card
 
@@ -25,7 +25,7 @@ class DrawFromDeckAction:
         return {"action_name": "DrawFromDeckAction", "card": self.card.short}
 
 
-@dataclass
+@dataclass(slots=True)
 class DrawFromDiscardAction:
     card: Card
 
@@ -34,7 +34,7 @@ class DrawFromDiscardAction:
         return {"action_name": "DrawFromDiscardAction", "card": self.card.short}
 
 
-@dataclass
+@dataclass(slots=True)
 class InHandDiscardToPileAction:
     card: Card
 
@@ -43,7 +43,7 @@ class InHandDiscardToPileAction:
         return {"action_name": "InHandDiscardToPileAction", "card": self.card.short}
 
 
-@dataclass
+@dataclass(slots=True)
 class SkipSpellAction:
     spell_type: SpellType
 
@@ -52,7 +52,7 @@ class SkipSpellAction:
         return {"action_name": "SkipSpellAction", "spell_type": self.spell_type}
 
 
-@dataclass
+@dataclass(slots=True)
 class InHandSwapAction:
     owner_card: Card
     in_hand_card: Card
@@ -66,7 +66,7 @@ class InHandSwapAction:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class BlindExchangeCardAction:
     self_card: Card
     other_player_card: PlayerCard
@@ -80,7 +80,7 @@ class BlindExchangeCardAction:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class ViewExchangeCardAction:
     player_card: Card
     other_player_card: PlayerCard
@@ -94,7 +94,7 @@ class ViewExchangeCardAction:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class DrawPunishementCardAction:
     card: Card
 
@@ -103,7 +103,7 @@ class DrawPunishementCardAction:
         return {"action_name": "DrawPunishementCardAction", "card": self.card.short}
 
 
-@dataclass
+@dataclass(slots=True)
 class DiscardFromHandAction:
     card: Card
 
@@ -132,7 +132,7 @@ PlayerActions: TypeAlias = (
 )
 
 
-@dataclass
+@dataclass(slots=True)
 class PlayerAction:
     player: Player
     decision: PlayerDecisons

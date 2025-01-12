@@ -21,7 +21,7 @@ class GamePhaseType(StrEnum):
     GAME_OVER = auto()
 
 
-@dataclass
+@dataclass(slots=True)
 class GamePhase:
     player: Player
     type: GamePhaseType

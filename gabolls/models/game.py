@@ -8,7 +8,7 @@ from gabolls.models.rules import Rules
 from gabolls.models.seed import Seed
 
 
-@dataclass
+@dataclass(slots=True)
 class GameState:
     lobby: Lobby
     round_nb: int

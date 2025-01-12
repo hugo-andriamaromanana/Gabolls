@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from gabolls.models.card import Card
 
 
-@dataclass
+@dataclass(slots=True)
 class CardView:
     card: Card
     owner: int | None

@@ -4,7 +4,7 @@ from gabolls.models.spell import SPELL_RANKS
 from gabolls.models.suit import SHORT_SUITS, Suit
 
 
-@dataclass
+@dataclass(slots=True)
 class Card:
     rank: Rank
     suit: Suit

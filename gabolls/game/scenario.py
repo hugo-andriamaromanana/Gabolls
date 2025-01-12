@@ -59,7 +59,7 @@ def _create_round_ends_for_group(
 def find_player_end_rounds(
     round: Round, declared_wins: list[Player], scenario: RoundEndScenario, rules: Rules
 ) -> list[RoundEnd]:
-    players = round.lobby.players
+    players = set(round.lobby.players)
     declared_wins_set = set(declared_wins)
     small_penalty_players = set(
         player

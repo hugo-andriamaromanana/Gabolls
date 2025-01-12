@@ -10,7 +10,7 @@ class DiscardResultType(StrEnum):
     FAIL = auto()
 
 
-@dataclass
+@dataclass(slots=True)
 class DiscardRequest:
     player: Player
     card: Card
@@ -20,14 +20,14 @@ class DiscardRequest:
         return {"player_id": self.player.id, "card": self.card.short}
 
 
-@dataclass
+@dataclass(slots=True)
 class DiscardResponse:
     card: Card
     player: Player
     result: DiscardResultType
 
 
-@dataclass
+@dataclass(slots=True)
 class DiscardRequests:
     queue: list[DiscardRequest]
 

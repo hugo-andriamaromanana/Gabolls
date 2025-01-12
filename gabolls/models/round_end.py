@@ -27,7 +27,7 @@ class RoundEndScenario(StrEnum):
     CLASSIC = auto()
 
 
-@dataclass
+@dataclass(slots=True)
 class RoundEnd:
     player: Player
     new_points: int

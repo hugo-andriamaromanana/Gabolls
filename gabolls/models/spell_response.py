@@ -3,7 +3,7 @@ from typing import Any
 from gabolls.models.spell import SpellType
 
 
-@dataclass
+@dataclass(slots=True)
 class SpellResponse:
     ok: bool
     spell_type: SpellType | None

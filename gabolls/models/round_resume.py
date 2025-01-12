@@ -5,7 +5,7 @@ from gabolls.models.action import RoundAction
 from gabolls.models.round_end import RoundEnd, RoundEndScenario
 
 
-@dataclass
+@dataclass(slots=True)
 class RoundResume:
     deck: Deck
     lobby: Lobby

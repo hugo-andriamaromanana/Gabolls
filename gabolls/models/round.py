@@ -10,7 +10,7 @@ from gabolls.models.player import Player
 from gabolls.models.spell_response import SpellResponse
 
 
-@dataclass
+@dataclass(slots=True)
 class Round:
     number: int
     lobby: Lobby

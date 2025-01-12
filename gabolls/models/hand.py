@@ -5,7 +5,7 @@ from gabolls.models.card_view import CardView
 from gabolls.models.errors import CardNotInPlayerHand
 
 
-@dataclass
+@dataclass(slots=True)
 class Hand:
     cards: list[Card]
     card_views: list[CardView]

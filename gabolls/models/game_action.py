@@ -10,7 +10,7 @@ class RoundOverAction:
 GameActions: TypeAlias = RoundOverAction
 
 
-@dataclass
+@dataclass(slots=True)
 class GameAction:
     action: GameActions
 

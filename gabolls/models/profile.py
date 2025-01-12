@@ -1,14 +1,13 @@
 from dataclasses import dataclass
-from functools import cached_property
 from uuid import UUID
 
 
-@dataclass
+@dataclass(slots=True)
 class Profile:
     name: str
     uuid: UUID
 
-    @cached_property
+    @property
     def id(self) -> int:
         return hash(self.uuid)
 

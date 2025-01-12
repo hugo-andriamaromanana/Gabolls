@@ -15,7 +15,7 @@ class DrawDecisionType(StrEnum):
     FROM_DISCARD = auto()
 
 
-@dataclass
+@dataclass(slots=True)
 class InHandDiscardDecision:
     card: Card
 
@@ -24,7 +24,7 @@ class InHandDiscardDecision:
         return {"decision_name": "InHandDiscardDecision", "card": self.card.short}
 
 
-@dataclass
+@dataclass(slots=True)
 class InHandSwapDecision:
     owner_card: Card
     in_hand_card: Card
@@ -38,7 +38,7 @@ class InHandSwapDecision:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class BlindExchangeCardDecision:
     player_card: Card
     other_player_card: PlayerCard
@@ -52,7 +52,7 @@ class BlindExchangeCardDecision:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class ViewExchangeCardDecision:
     player_card: Card
     other_player_card: PlayerCard
@@ -66,7 +66,7 @@ class ViewExchangeCardDecision:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class PeakDecision:
     player_card: PlayerCard
 
@@ -105,7 +105,7 @@ class CallCounterDecision:
         self.as_dict = {"decision_name": "CallCounterDecision"}
 
 
-@dataclass
+@dataclass(slots=True)
 class DiscardFromHandDecision:
     card: Card
 

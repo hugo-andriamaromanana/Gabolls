@@ -7,6 +7,6 @@ from gabolls.models.player_action import PlayerAction
 RoundActions: TypeAlias = GameAction | PlayerAction
 
 
-@dataclass
+@dataclass(slots=True)
 class RoundAction:
     action: RoundActions

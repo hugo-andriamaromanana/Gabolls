@@ -8,7 +8,7 @@ from gabolls.models.rank import Rank
 from gabolls.models.suit import Suit
 
 
-@dataclass
+@dataclass(slots=True)
 class Deck:
     cards: list[Card]
     seed: int

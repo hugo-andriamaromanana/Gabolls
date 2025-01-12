@@ -4,7 +4,7 @@ from gabolls.models.card import Card
 from gabolls.models.player import Player
 
 
-@dataclass
+@dataclass(slots=True)
 class PlayerCard:
     player: Player
     card: Card

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from functools import cached_property
 from typing import Any
 from gabolls.models.card_view import CardView
 from gabolls.models.hand import Hand
@@ -7,14 +6,14 @@ from gabolls.models.profile import Profile
 from gabolls.models.rules import Rules
 
 
-@dataclass
+@dataclass(slots=True)
 class Player:
     profile: Profile
     score: int
     hand: Hand
     rules: Rules
 
-    def view_card(self, card: "CardView") -> None:
+    def view_card(self, card: CardView) -> None:
         self.hand.card_views.append(card)
 
     @property
@@ -29,7 +28,7 @@ class Player:
     def is_eligible(self) -> bool:
         return self.true_score <= self.rules.round_win_cap
 
-    @cached_property
+    @property
     def id(self) -> int:
         return self.profile.id
 
