@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from random import Random
 
-from gabolls.models.card import BLANK_CARD, Card, CardView
+from gabolls.models.card import BLANK_CARD, Card
+from gabolls.models.card_view import CardView
 from gabolls.models.errors import CannotDrawFromEmptyDeck
 from gabolls.models.rank import Rank
 from gabolls.models.suit import Suit

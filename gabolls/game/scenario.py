@@ -48,7 +48,7 @@ def _create_round_ends_for_group(
 ) -> list[RoundEnd]:
     round_ends: list[RoundEnd] = []
     for player in group:
-        round_score = round.get_player_score(player)
+        round_score = round.get_player_score(player.id)
         round_end = infer_round_end_by_type(
             player, round_score, round_end_type, scenario, rules
         )
@@ -127,7 +127,7 @@ def find_player_end_rounds(
         others = players - winners
         others.remove(dickhead)
 
-        round_score = round.get_player_score(dickhead)
+        round_score = round.get_player_score(dickhead.id)
         dickhead_round_end = infer_round_end_by_type(
             dickhead, round_score, RoundEndType.DIFFERED_PENALTY, scenario, rules
         )

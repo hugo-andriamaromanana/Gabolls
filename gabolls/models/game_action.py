@@ -1,15 +1,13 @@
 from dataclasses import dataclass
-from typing import TypeAlias
+from typing import Any, TypeAlias
 
 
 class RoundOverAction:
-    pass
+    def __init__(self) -> None:
+        self.as_dict = {"action_name": "RoundOverAction"}
 
 
 GameActions: TypeAlias = RoundOverAction
-
-
-SHORT_GAME_ACTIONS: dict[type[GameActions], str] = {RoundOverAction: "ROA"}
 
 
 @dataclass
@@ -17,5 +15,5 @@ class GameAction:
     action: GameActions
 
     @property
-    def short(self) -> str:
-        return SHORT_GAME_ACTIONS[type(self.action)]
+    def as_dict(self) -> dict[str, Any]:
+        return {"game_action": self.action.as_dict}

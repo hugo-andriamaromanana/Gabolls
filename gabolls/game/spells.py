@@ -6,7 +6,8 @@ from gabolls.api.round import (
     select_player_card,
 )
 from gabolls.models.action import RoundAction
-from gabolls.models.card import Card, CardView
+from gabolls.models.card import Card
+from gabolls.models.card_view import CardView
 from gabolls.models.decisions import (
     BlindExchangeCardDecision,
     PeakDecision,
@@ -70,7 +71,7 @@ async def play_spell(
         view_swap_target: PlayerCard = await select_player_card(
             player, round.lobby.players
         )
-        view_card_view = CardView(view_swap_target.card, view_swap_target.player)
+        view_card_view = CardView(view_swap_target.card, view_swap_target.player.id)
         player.view_card(view_card_view)
 
         other_players = round.lobby.players.difference([player])
@@ -99,7 +100,7 @@ async def play_spell(
 
     elif spell_type is SpellType.SELF_PEAK:
         peak_self_card = await ask_player_self_card(player)
-        peak_card_view = CardView(peak_self_card, player)
+        peak_card_view = CardView(peak_self_card, player.id)
         player.view_card(peak_card_view)
 
         self_player_card = PlayerCard(player, peak_self_card)
@@ -111,7 +112,7 @@ async def play_spell(
 
     elif spell_type is SpellType.OTHER_PEAK:
         other_peak_target = await select_player_card(player, round.lobby.players)
-        card_view = CardView(other_peak_target.card, other_peak_target.player)
+        card_view = CardView(other_peak_target.card, other_peak_target.player.id)
         player.view_card(card_view)
 
         other_players = round.lobby.players.difference([player])

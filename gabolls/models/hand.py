@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from gabolls.models.card import Card, CardView
+from gabolls.models.card import Card
+from gabolls.models.card_view import CardView
+
 from gabolls.models.errors import CardNotInPlayerHand
 
 

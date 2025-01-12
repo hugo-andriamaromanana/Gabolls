@@ -1,4 +1,3 @@
-from gabolls.api.round import ask_player_draw_decision
 from gabolls.models.action import RoundAction
 from gabolls.models.card import Card
 from gabolls.models.decisions import DrawDecisionType, DrawFromDeckDecision
@@ -12,8 +11,9 @@ from gabolls.models.player_action import (
 from gabolls.models.round import Round
 
 
-async def draw_phase(round: Round, player: Player) -> tuple[Round, Card]:
-    draw_decision = await ask_player_draw_decision(player)
+async def draw_phase(
+    draw_decision: DrawDecisionType, round: Round, player: Player
+) -> tuple[Round, Card]:
 
     if draw_decision is DrawDecisionType.FROM_DECK:
 

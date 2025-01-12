@@ -8,3 +8,7 @@ from gabolls.models.player import Player
 class PlayerCard:
     player: Player
     card: Card
+
+    @property
+    def short(self) -> dict[str, int | str]:
+        return {"player_id": self.player.id, "card": self.card.short}

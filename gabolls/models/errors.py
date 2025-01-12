@@ -32,3 +32,7 @@ class ScoringNotSolved(NotImplementedError):
 
 class UnclearedSpellType(ValueError):
     pass
+
+
+class FirstPlayerNotInPLayers(ValueError):
+    pass

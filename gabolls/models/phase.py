@@ -25,3 +25,7 @@ class GamePhaseType(StrEnum):
 class GamePhase:
     player: Player
     type: GamePhaseType
+
+    @property
+    def as_dict(self) -> dict[str, str | int]:
+        return {"player_id": self.player.id, "type": self.type}

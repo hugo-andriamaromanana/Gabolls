@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TypeAlias
+from typing import Any, TypeAlias
 from gabolls.models.card import Card
 from gabolls.models.decisions import PlayerDecisons
 from gabolls.models.player import Player
@@ -11,25 +11,45 @@ from gabolls.models.spell import SpellType
 class PeakCardAction:
     player_card: PlayerCard
 
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "PeakCardAction", "player_card": self.player_card}
+
 
 @dataclass
 class DrawFromDeckAction:
     card: Card
+
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "DrawFromDeckAction", "card": self.card.short}
 
 
 @dataclass
 class DrawFromDiscardAction:
     card: Card
 
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "DrawFromDiscardAction", "card": self.card.short}
+
 
 @dataclass
 class InHandDiscardToPileAction:
     card: Card
 
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "InHandDiscardToPileAction", "card": self.card.short}
+
 
 @dataclass
 class SkipSpellAction:
     spell_type: SpellType
+
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "SkipSpellAction", "spell_type": self.spell_type}
 
 
 @dataclass
@@ -37,11 +57,27 @@ class InHandSwapAction:
     owner_card: Card
     in_hand_card: Card
 
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "action_name": "InHandSwapAction",
+            "owner_card": self.owner_card.short,
+            "in_hand_card": self.in_hand_card.short,
+        }
+
 
 @dataclass
 class BlindExchangeCardAction:
     self_card: Card
     other_player_card: PlayerCard
+
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "action_name": "BlindExchangeCardAction",
+            "self_card": self.self_card.short,
+            "other_player_card": self.other_player_card.short,
+        }
 
 
 @dataclass
@@ -49,19 +85,36 @@ class ViewExchangeCardAction:
     player_card: Card
     other_player_card: PlayerCard
 
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "action_name": "ViewExchangeCardAction",
+            "player_card": self.player_card.short,
+            "other_player_card": self.other_player_card.short,
+        }
+
 
 @dataclass
 class DrawPunishementCardAction:
     card: Card
+
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "DrawPunishementCardAction", "card": self.card.short}
 
 
 @dataclass
 class DiscardFromHandAction:
     card: Card
 
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {"action_name": "DiscardFromHandAction", "card": self.card.short}
+
 
 class CounterAction:
-    pass
+    def __init__(self) -> None:
+        self.as_dict = {"action_name": "CounterAction"}
 
 
 PlayerActions: TypeAlias = (
@@ -84,3 +137,11 @@ class PlayerAction:
     player: Player
     decision: PlayerDecisons
     action: PlayerActions
+
+    @property
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "player_id": self.player.id,
+            "decision": self.decision.as_dict,
+            "action": self.action.as_dict,
+        }
