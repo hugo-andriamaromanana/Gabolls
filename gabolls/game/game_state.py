@@ -1,62 +1,17 @@
+from gabolls.api.round import ask_player_draw_decision
 from gabolls.game.phases.counter import solve_counters
 from gabolls.game.phases.discard import solve_discard
 from gabolls.game.phases.drawing import draw_phase
 from gabolls.game.phases.in_hand import in_hand_phase
+from gabolls.game.game import create_round
 from gabolls.game.spells import play_spell
-from gabolls.models.action import RoundAction
-from gabolls.models.card import BLANK_CARD
-from gabolls.models.deck import STANDARD_CARDS, Deck
-from gabolls.models.discard import DiscardRequests
+from gabolls.models.card_view import CardView
 from gabolls.models.errors import UnclearedSpellType
 from gabolls.models.game import GameState
-from gabolls.models.lobby import Lobby
 from gabolls.models.phase import GamePhaseType
-from gabolls.models.player import Player
-from gabolls.models.round import Round
 
 
-from gabolls.models.spell_response import SpellResponse
-
-
-def create_round(
-    lobby: Lobby,
-    deck_seed: int,
-    hand_size: int,
-    round_number: int,
-    first_player: Player,
-) -> Round:
-
-    deck = Deck(STANDARD_CARDS, deck_seed)
-    deck.shuffle()
-    discard_pile: Deck = Deck([], 0)
-    declared_winners: list[Player] = []
-    player_scores = {player: 0 for player in lobby.players}
-    round_actions: list[RoundAction] = []
-    discard_requests = DiscardRequests([])
-
-    round = Round(
-        round_number,
-        lobby,
-        discard_pile,
-        deck,
-        first_player,
-        player_scores,
-        round_actions,
-        discard_requests,
-        declared_winners,
-        BLANK_CARD,
-        SpellResponse(False, None),
-        False,
-    )
-
-    # player draw hand size cards each
-    for player in lobby.players:
-        player.hand.add(deck.draw(hand_size))
-
-    return round
-
-
-async def play_game(game_state: GameState) -> GameState:
+async def update_game_state(game_state: GameState) -> GameState:
 
     if game_state.game_phase.type is GamePhaseType.NEW_ROUND:
         game_state.round_nb += 1
@@ -65,15 +20,28 @@ async def play_game(game_state: GameState) -> GameState:
         game_state.round = create_round(
             game_state.lobby,
             deck_seed,
-            game_state.rules.start_hand_size,
             game_state.round_nb,
-            first_player,
+            first_player.id,
         )
+
+        # player draw hand size cards each
+        for player in game_state.lobby.players:
+            player.hand.add(
+                game_state.round.deck.draw(game_state.rules.start_hand_size)
+            )
+
+        # each player looks their first 2 cards
+        for player in game_state.lobby.players:
+            for card in game_state.round.deck.cards[: game_state.rules.starting_view]:
+                player.view_card(CardView(card, player.id))
+
+        game_state.game_phase.type = GamePhaseType.DRAWING
         return game_state
 
     elif game_state.game_phase.type is GamePhaseType.DRAWING:
+        draw_decision = await ask_player_draw_decision(game_state.game_phase.player)
         game_state.round, game_state.round.drawn_card = await draw_phase(
-            game_state.round, game_state.game_phase.player
+            draw_decision, game_state.round, game_state.game_phase.player
         )
         game_state.game_phase.type = GamePhaseType.DISCARDING_0
         return game_state
