@@ -7,7 +7,7 @@ from gabolls.game.game import create_round
 from gabolls.game.spells import play_spell
 from gabolls.models.card_view import CardView
 from gabolls.models.errors import UnclearedSpellType
-from gabolls.models.game import GameState
+from gabolls.models.game_state import GameState
 from gabolls.models.phase import GamePhaseType
 
 

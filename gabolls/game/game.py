@@ -5,7 +5,7 @@ from gabolls.models.action import RoundAction
 from gabolls.models.card import BLANK_CARD
 from gabolls.models.deck import Deck
 from gabolls.models.discard import DiscardRequests
-from gabolls.models.game import GameState
+from gabolls.models.game_state import GameState
 from gabolls.models.hand import Hand
 from gabolls.models.lobby import Lobby
 from gabolls.models.phase import GamePhase, GamePhaseType
