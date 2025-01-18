@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 from enum import StrEnum, auto
+
+from gabolls.models.config import BaseModel
 
 from gabolls.models.player import Player
 
@@ -21,11 +22,6 @@ class GamePhaseType(StrEnum):
     GAME_OVER = auto()
 
 
-@dataclass(slots=True)
-class GamePhase:
+class GamePhase(BaseModel):
     player: Player
     type: GamePhaseType
-
-    @property
-    def as_dict(self) -> dict[str, str | int]:
-        return {"player_id": self.player.id, "type": self.type}

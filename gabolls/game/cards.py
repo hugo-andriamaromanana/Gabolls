@@ -22,10 +22,10 @@ BLACK_KING_RANK = 13
 RED_KING_RANK = 0
 
 BLACK_KINGS = [
-    Card(Rank.KING, Suit.CLUB, BLACK_KING_RANK),
-    Card(Rank.KING, Suit.SPADE, BLACK_KING_RANK),
-    Card(Rank.KING, Suit.DIAMOND, RED_KING_RANK),
-    Card(Rank.KING, Suit.HEART, RED_KING_RANK),
+    Card(rank=Rank.KING, suit=Suit.CLUB, value=BLACK_KING_RANK),
+    Card(rank=Rank.KING, suit=Suit.SPADE, value=BLACK_KING_RANK),
+    Card(rank=Rank.KING, suit=Suit.DIAMOND, value=RED_KING_RANK),
+    Card(rank=Rank.KING, suit=Suit.HEART, value=RED_KING_RANK),
 ]
 
 STANDARD_SUITS = [Suit.CLUB, Suit.DIAMOND, Suit.HEART, Suit.SPADE]
@@ -35,5 +35,5 @@ def create_standard_cards() -> list[Card]:
     deck = []
     for rank, value in STANDARD_RANK_SCORES.items():
         for suit in STANDARD_SUITS:
-            deck.append(Card(rank, suit, value))
+            deck.append(Card(rank=rank, suit=suit, value=value))
     return deck + BLACK_KINGS

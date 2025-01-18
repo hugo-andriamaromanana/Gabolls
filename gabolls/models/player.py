@@ -1,13 +1,13 @@
-from dataclasses import dataclass
 from typing import Any
+
+from gabolls.models.config import BaseModel
 from gabolls.models.card_view import CardView
 from gabolls.models.hand import Hand
 from gabolls.models.profile import Profile
 from gabolls.models.rules import Rules
 
 
-@dataclass(slots=True)
-class Player:
+class Player(BaseModel):
     profile: Profile
     score: int
     hand: Hand

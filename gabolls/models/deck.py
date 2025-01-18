@@ -1,13 +1,13 @@
-from dataclasses import dataclass
 from random import Random
+
+from gabolls.models.config import BaseModel
 
 from gabolls.models.card import BLANK_CARD, Card
 from gabolls.models.card_view import CardView
 from gabolls.models.errors import CannotDrawFromEmptyDeck
 
 
-@dataclass(slots=True)
-class Deck:
+class Deck(BaseModel):
     cards: list[Card]
     seed: int
 
@@ -20,9 +20,9 @@ class Deck:
     @property
     def top_card_view(self) -> CardView:
         if not self.is_empty:
-            return CardView(self.cards[0], None)
+            return CardView(card=self.cards[0], owner=None)
         else:
-            return CardView(BLANK_CARD, None)
+            return CardView(card=BLANK_CARD, owner=None)
 
     def add_to_top(self, card: Card) -> None:
         self.cards.insert(0, card)

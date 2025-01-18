@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from gabolls.models.config import BaseModel
 
 
-@dataclass(slots=True)
-class Rules:
+class Rules(BaseModel):
     starting_view: int
     start_hand_size: int
     loss_cap: int
@@ -13,20 +12,6 @@ class Rules:
     large_penalty_points: int
     small_comeback_trigger: int
     large_comeback_trigger: int
-
-    @property
-    def as_dict(self) -> dict[str, int]:
-        return {
-            "start_hand_size": self.start_hand_size,
-            "loss_cap": self.loss_cap,
-            "round_win_cap": self.round_win_cap,
-            "small_comeback_bonus": self.small_comeback_bonus,
-            "large_comeback_bonus": self.large_comeback_bonus,
-            "small_penalty_points": self.small_penalty_points,
-            "large_penalty_points": self.large_penalty_points,
-            "small_comeback_trigger": self.small_comeback_trigger,
-            "large_comeback_trigger": self.large_comeback_trigger,
-        }
 
 
 DEFAULT_RULES_DICT = {

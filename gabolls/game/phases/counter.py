@@ -12,9 +12,11 @@ async def solve_counters(round: Round) -> tuple[Round, bool]:
 
     if counter_called:
         player_action = PlayerAction(
-            counter_called, CallCounterDecision(), CounterAction()
+            player=counter_called,
+            decision=CallCounterDecision(),
+            action=CounterAction(),
         )
-        round_action = RoundAction(player_action)
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
     return round, counter_win_called

@@ -1,12 +1,11 @@
-from dataclasses import dataclass
+from gabolls.models.config import BaseModel
 from gabolls.models.deck import Deck
 from gabolls.models.lobby import Lobby
 from gabolls.models.action import RoundAction
 from gabolls.models.round_end import RoundEnd, RoundEndScenario
 
 
-@dataclass(slots=True)
-class RoundResume:
+class RoundResume(BaseModel):
     deck: Deck
     lobby: Lobby
     actions: list[RoundAction]

@@ -33,7 +33,7 @@ async def update_game_state(game_state: GameState) -> GameState:
         # each player looks their first 2 cards
         for player in game_state.lobby.players:
             for card in game_state.round.deck.cards[: game_state.rules.starting_view]:
-                player.view_card(CardView(card, player.id))
+                player.view_card(CardView(card=card, owner=player.id))
 
         game_state.game_phase.type = GamePhaseType.DRAWING
         return game_state

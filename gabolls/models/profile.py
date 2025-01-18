@@ -1,9 +1,8 @@
-from dataclasses import dataclass
 from uuid import UUID
+from gabolls.models.config import BaseModel
 
 
-@dataclass(slots=True)
-class Profile:
+class Profile(BaseModel):
     name: str
     uuid: UUID
 

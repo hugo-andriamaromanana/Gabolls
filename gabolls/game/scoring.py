@@ -28,7 +28,7 @@ def infer_round_end_by_type(
     rules: Rules,
 ) -> RoundEnd:
 
-    if round_end_type in RoundEndType.SCORING:
+    if round_end_type is RoundEndType.SCORING:
         scoring_type = solve_scoring_type(hand_score, player.score, rules)
         if scoring_type is RoundEndType.LARGE_COMEBACK:
             new_points = rules.large_comeback_bonus
@@ -68,5 +68,7 @@ def infer_round_end_by_type(
             f"Round end type: {round_end_type} not implemented."
         )
 
-    round_end = RoundEnd(player, new_points, round_end_type, scenario)
+    round_end = RoundEnd(
+        player=player, new_points=new_points, type=round_end_type, scenario=scenario
+    )
     return round_end

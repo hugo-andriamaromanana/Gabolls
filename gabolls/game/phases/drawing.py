@@ -19,22 +19,24 @@ async def draw_phase(
 
         drawn_card = round.deck.draw_top_card()
 
-        deck_draw_action = DrawFromDeckAction(drawn_card)
-        player_action = PlayerAction(player, DrawFromDeckDecision(), deck_draw_action)
+        deck_draw_action = DrawFromDeckAction(card=drawn_card)
+        player_action = PlayerAction(
+            player=player, decision=DrawFromDeckDecision(), action=deck_draw_action
+        )
 
     elif draw_decision is DrawDecisionType.FROM_DISCARD:
 
         drawn_card = round.discard_pile.draw_top_card()
 
-        discard_draw_action = DrawFromDiscardAction(drawn_card)
+        discard_draw_action = DrawFromDiscardAction(card=drawn_card)
         player_action = PlayerAction(
-            player, DrawFromDeckDecision(), discard_draw_action
+            player=player, decision=DrawFromDeckDecision(), action=discard_draw_action
         )
 
     else:
         raise NoDecisionsTaken
 
-    round_action = RoundAction(player_action)
+    round_action = RoundAction(action=player_action)
     round.actions.append(round_action)
 
     return round, drawn_card

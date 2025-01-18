@@ -1,11 +1,10 @@
-from dataclasses import dataclass
+from gabolls.models.config import BaseModel
 from gabolls.models.rank import SHORT_RANKS, Rank
 from gabolls.models.spell import SPELL_RANKS
 from gabolls.models.suit import SHORT_SUITS, Suit
 
 
-@dataclass(slots=True)
-class Card:
+class Card(BaseModel):
     rank: Rank
     suit: Suit
     value: int
@@ -19,4 +18,4 @@ class Card:
         return SHORT_RANKS[self.rank] + SHORT_SUITS[self.suit]
 
 
-BLANK_CARD = Card(Rank.NONE, Suit.NONE, 0)
+BLANK_CARD = Card(rank=Rank.NONE, suit=Suit.NONE, value=0)

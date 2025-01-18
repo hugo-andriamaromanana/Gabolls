@@ -1,22 +1,16 @@
 from itertools import cycle
 from typing import Any
 
+from gabolls.models.config import BaseModel
+
 from gabolls.models.errors import PlayerNotFoundInRoundError
 from gabolls.models.player import Player
 
 
-class Lobby:
-
-    def __init__(self, first_player_id: int, players: set[Player]) -> None:
-        self.first_player_id = first_player_id
-        self.players = players
-        self.cycle = cycle(self.players)
-        nb_of_players = len(self.players)
-        # initializing cycle to first_player
-        for _ in range(nb_of_players):
-            player = next(self.cycle)
-            if player.id == self.first_player_id:
-                return None
+class Lobby(BaseModel):
+    first_player_id: int
+    players: list[Player]
+    cycle: cycle
 
     @property
     def next_player(self) -> Player:

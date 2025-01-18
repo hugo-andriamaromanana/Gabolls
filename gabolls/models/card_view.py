@@ -1,9 +1,8 @@
-from dataclasses import dataclass
+from gabolls.models.config import BaseModel
 from gabolls.models.card import Card
 
 
-@dataclass(slots=True)
-class CardView:
+class CardView(BaseModel):
     card: Card
     owner: int | None
 

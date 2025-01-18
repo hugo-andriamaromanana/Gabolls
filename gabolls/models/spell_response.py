@@ -1,10 +1,10 @@
-from dataclasses import dataclass
 from typing import Any
+
+from gabolls.models.config import BaseModel
 from gabolls.models.spell import SpellType
 
 
-@dataclass(slots=True)
-class SpellResponse:
+class SpellResponse(BaseModel):
     ok: bool
     spell_type: SpellType | None
 

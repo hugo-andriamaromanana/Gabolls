@@ -1,12 +1,11 @@
-from dataclasses import dataclass
+from gabolls.models.config import BaseModel
 from gabolls.models.card import Card
 from gabolls.models.card_view import CardView
 
 from gabolls.models.errors import CardNotInPlayerHand
 
 
-@dataclass(slots=True)
-class Hand:
+class Hand(BaseModel):
     cards: list[Card]
     card_views: list[CardView]
 

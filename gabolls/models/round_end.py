@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 from enum import StrEnum, auto
+
+from gabolls.models.config import BaseModel
 
 from gabolls.models.player import Player
 
@@ -27,8 +28,7 @@ class RoundEndScenario(StrEnum):
     CLASSIC = auto()
 
 
-@dataclass(slots=True)
-class RoundEnd:
+class RoundEnd(BaseModel):
     player: Player
     new_points: int
     type: RoundEndType

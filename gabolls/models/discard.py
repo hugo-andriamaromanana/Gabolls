@@ -1,6 +1,7 @@
-from dataclasses import dataclass
 from enum import StrEnum, auto
 from typing import Any
+
+from gabolls.models.config import BaseModel
 from gabolls.models.card import Card
 from gabolls.models.player import Player
 
@@ -10,8 +11,7 @@ class DiscardResultType(StrEnum):
     FAIL = auto()
 
 
-@dataclass(slots=True)
-class DiscardRequest:
+class DiscardRequest(BaseModel):
     player: Player
     card: Card
 
@@ -20,15 +20,13 @@ class DiscardRequest:
         return {"player_id": self.player.id, "card": self.card.short}
 
 
-@dataclass(slots=True)
-class DiscardResponse:
+class DiscardResponse(BaseModel):
     card: Card
     player: Player
     result: DiscardResultType
 
 
-@dataclass(slots=True)
-class DiscardRequests:
+class DiscardRequests(BaseModel):
     queue: list[DiscardRequest]
 
     def add(self, request: DiscardRequest) -> None:

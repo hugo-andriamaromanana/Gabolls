@@ -23,7 +23,7 @@ from gabolls.models.spell_response import SpellResponse
 async def in_hand_phase(
     round: Round, player: Player, drawn_card: Card
 ) -> tuple[Round, SpellResponse]:
-    spell_response = SpellResponse(False, None)
+    spell_response = SpellResponse(ok=False, spell_type=None)
     in_hand_decision: InHandDiscardDecision | InHandSwapDecision = (
         await ask_player_in_hand_decision(player, drawn_card)
     )
@@ -31,26 +31,36 @@ async def in_hand_phase(
         player.hand.swap(in_hand_decision.owner_card, in_hand_decision.in_hand_card)
 
         player_in_hand_swap_decision = InHandSwapDecision(
-            in_hand_decision.owner_card, in_hand_decision.in_hand_card
+            owner_card=in_hand_decision.owner_card,
+            in_hand_card=in_hand_decision.in_hand_card,
         )
         player_in_hand_swap_action = InHandSwapAction(
-            in_hand_decision.owner_card, in_hand_decision.in_hand_card
+            owner_card=in_hand_decision.owner_card,
+            in_hand_card=in_hand_decision.in_hand_card,
         )
         player_action = PlayerAction(
-            player, player_in_hand_swap_decision, player_in_hand_swap_action
+            player=player,
+            decision=player_in_hand_swap_decision,
+            action=player_in_hand_swap_action,
         )
-        round_action = RoundAction(player_action)
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
     elif isinstance(in_hand_decision, InHandDiscardToPileAction):
         round.discard_pile.add_to_top(in_hand_decision.card)
 
-        player_in_hand_discard_decision = InHandDiscardDecision(in_hand_decision.card)
-        player_in_hand_discard_action = InHandDiscardToPileAction(in_hand_decision.card)
-        player_action = PlayerAction(
-            player, player_in_hand_discard_decision, player_in_hand_discard_action
+        player_in_hand_discard_decision = InHandDiscardDecision(
+            card=in_hand_decision.card
         )
-        round_action = RoundAction(player_action)
+        player_in_hand_discard_action = InHandDiscardToPileAction(
+            card=in_hand_decision.card
+        )
+        player_action = PlayerAction(
+            player=player,
+            decision=player_in_hand_discard_decision,
+            action=player_in_hand_discard_action,
+        )
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
         if in_hand_decision.card.has_spell:
@@ -60,9 +70,11 @@ async def in_hand_phase(
                 return round, spell_response
             else:
                 player_action = PlayerAction(
-                    player, SkipSpellDecision(), SkipSpellAction(spell_type)
+                    player=player,
+                    decision=SkipSpellDecision(),
+                    action=SkipSpellAction(spell_type=spell_type),
                 )
-                round_action = RoundAction(player_action)
+                round_action = RoundAction(action=player_action)
                 round.actions.append(round_action)
                 logger.info(f"Player: {player} skipped spell: {spell_type}")
     else:

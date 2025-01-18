@@ -1,19 +1,14 @@
-from dataclasses import dataclass
-from typing import Any, TypeAlias
+from typing import TypeAlias
+
+from gabolls.models.config import BaseModel
 
 
-class RoundOverAction:
-    def __init__(self) -> None:
-        self.as_dict = {"action_name": "RoundOverAction"}
+class RoundOverAction(BaseModel):
+    pass
 
 
 GameActions: TypeAlias = RoundOverAction
 
 
-@dataclass(slots=True)
-class GameAction:
+class GameAction(BaseModel):
     action: GameActions
-
-    @property
-    def as_dict(self) -> dict[str, Any]:
-        return {"game_action": self.action.as_dict}

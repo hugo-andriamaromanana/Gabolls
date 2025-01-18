@@ -56,71 +56,87 @@ async def play_spell(
         )
         blind_self_card: Card = await ask_player_self_card(player)
         await player_exchange_cards(
-            PlayerCard(player, blind_self_card), blind_swap_target
+            PlayerCard(player=player, card=blind_self_card), blind_swap_target
         )
 
         blind_swap_decision = BlindExchangeCardDecision(
-            blind_self_card, blind_swap_target
+            player_card=blind_self_card, other_player_card=blind_swap_target
         )
-        blind_swap_action = BlindExchangeCardAction(blind_self_card, blind_swap_target)
-        player_action = PlayerAction(player, blind_swap_decision, blind_swap_action)
-        round_action = RoundAction(player_action)
+        blind_swap_action = BlindExchangeCardAction(
+            self_card=blind_self_card, other_player_card=blind_swap_target
+        )
+        player_action = PlayerAction(
+            player=player, decision=blind_swap_decision, action=blind_swap_action
+        )
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
     elif spell_type is SpellType.VIEW_EXCHANGE:
         view_swap_target: PlayerCard = await select_player_card(
             player, round.lobby.players
         )
-        view_card_view = CardView(view_swap_target.card, view_swap_target.player.id)
+        view_card_view = CardView(
+            card=view_swap_target.card, owner=view_swap_target.player.id
+        )
         player.view_card(view_card_view)
 
-        other_players = round.lobby.players.difference([player])
+        other_players = list(set(round.lobby.players).difference([player]))
         other_player_card = await select_player_card(player, other_players)
-        other_peak_decision = PeakDecision(other_player_card)
-        other_peak_action = PeakCardAction(other_player_card)
-        player_action = PlayerAction(player, other_peak_decision, other_peak_action)
-        round_action = RoundAction(player_action)
+        other_peak_decision = PeakDecision(player_card=other_player_card)
+        other_peak_action = PeakCardAction(player_card=other_player_card)
+        player_action = PlayerAction(
+            player=player, decision=other_peak_decision, action=other_peak_action
+        )
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
         exchange_valid = await ask_player_exchange_valid(player)
         if exchange_valid:
             view_self_card: Card = await ask_player_self_card(player)
-            self_player_card = PlayerCard(player, view_self_card)
+            self_player_card = PlayerCard(player=player, card=view_self_card)
             await player_exchange_cards(self_player_card, view_swap_target)
 
             view_swap_decision = ViewExchangeCardDecision(
-                view_self_card, view_swap_target
+                player_card=view_self_card, other_player_card=view_swap_target
             )
             view_swap_action = ViewExchangeCardAction(
-                self_player_card.card, view_swap_target
+                player_card=self_player_card.card, other_player_card=view_swap_target
             )
-            player_action = PlayerAction(player, view_swap_decision, view_swap_action)
-            round_action = RoundAction(player_action)
+            player_action = PlayerAction(
+                player=player, decision=view_swap_decision, action=view_swap_action
+            )
+            round_action = RoundAction(action=player_action)
             round.actions.append(round_action)
 
     elif spell_type is SpellType.SELF_PEAK:
         peak_self_card = await ask_player_self_card(player)
-        peak_card_view = CardView(peak_self_card, player.id)
+        peak_card_view = CardView(card=peak_self_card, owner=player.id)
         player.view_card(peak_card_view)
 
-        self_player_card = PlayerCard(player, peak_self_card)
-        self_peak_decision = PeakDecision(self_player_card)
-        self_peak_action = PeakCardAction(self_player_card)
-        player_action = PlayerAction(player, self_peak_decision, self_peak_action)
-        round_action = RoundAction(player_action)
+        self_player_card = PlayerCard(player=player, card=peak_self_card)
+        self_peak_decision = PeakDecision(player_card=self_player_card)
+        self_peak_action = PeakCardAction(player_card=self_player_card)
+        player_action = PlayerAction(
+            player=player, decision=self_peak_decision, action=self_peak_action
+        )
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
     elif spell_type is SpellType.OTHER_PEAK:
         other_peak_target = await select_player_card(player, round.lobby.players)
-        card_view = CardView(other_peak_target.card, other_peak_target.player.id)
+        card_view = CardView(
+            card=other_peak_target.card, owner=other_peak_target.player.id
+        )
         player.view_card(card_view)
 
-        other_players = round.lobby.players.difference([player])
+        other_players = list(set(round.lobby.players).difference([player]))
         other_player_card = await select_player_card(player, other_players)
-        other_peak_decision = PeakDecision(other_player_card)
-        other_peak_action = PeakCardAction(other_player_card)
-        player_action = PlayerAction(player, other_peak_decision, other_peak_action)
-        round_action = RoundAction(player_action)
+        other_peak_decision = PeakDecision(player_card=other_player_card)
+        other_peak_action = PeakCardAction(player_card=other_player_card)
+        player_action = PlayerAction(
+            player=player, decision=other_peak_decision, action=other_peak_action
+        )
+        round_action = RoundAction(action=player_action)
         round.actions.append(round_action)
 
     else:
