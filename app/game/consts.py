@@ -1,7 +1,7 @@
 from os import environ
 from typing import Any
 
-from app.game.models.errors import EnvVarNotFound
+from app.schemas.errors import EnvVarNotFound
 
 
 def unpack_env_var(key: str) -> Any:
