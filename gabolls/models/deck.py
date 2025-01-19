@@ -1,6 +1,6 @@
 from random import Random
 
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 
 from gabolls.models.card import BLANK_CARD, Card
 from gabolls.models.card_view import CardView

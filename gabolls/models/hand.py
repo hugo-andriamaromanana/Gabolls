@@ -1,4 +1,4 @@
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 from gabolls.models.card import Card
 from gabolls.models.card_view import CardView
 

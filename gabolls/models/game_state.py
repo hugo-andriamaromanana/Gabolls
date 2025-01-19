@@ -1,4 +1,4 @@
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 
 from gabolls.models.lobby import Lobby
 from gabolls.models.phase import GamePhase

@@ -1,6 +1,6 @@
 from typing import TypeAlias
 
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 from gabolls.models.card import Card
 from gabolls.models.player_card import PlayerCard
 from enum import StrEnum, auto

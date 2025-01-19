@@ -1,6 +1,6 @@
 from typing import Any
 
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 from gabolls.models.card_view import CardView
 from gabolls.models.hand import Hand
 from gabolls.models.profile import Profile

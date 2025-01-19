@@ -1,4 +1,4 @@
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 from gabolls.models.action import RoundAction
 from gabolls.models.card import Card
 from gabolls.models.deck import Deck

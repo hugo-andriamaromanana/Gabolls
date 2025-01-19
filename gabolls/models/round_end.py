@@ -1,6 +1,6 @@
 from enum import StrEnum, auto
 
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 
 from gabolls.models.player import Player
 

@@ -1,7 +1,7 @@
 from itertools import cycle
 from typing import Any
 
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 
 from gabolls.models.errors import PlayerNotFoundInRoundError
 from gabolls.models.player import Player

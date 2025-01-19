@@ -1,5 +1,5 @@
 from uuid import UUID
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 
 
 class Profile(BaseModel):

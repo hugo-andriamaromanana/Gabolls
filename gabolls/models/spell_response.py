@@ -1,6 +1,6 @@
 from typing import Any
 
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 from gabolls.models.spell import SpellType
 
 

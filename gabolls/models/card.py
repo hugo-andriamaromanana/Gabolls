@@ -1,4 +1,4 @@
-from gabolls.models.config import BaseModel
+from gabolls.models.pydantic_config import BaseModel
 from gabolls.models.rank import SHORT_RANKS, Rank
 from gabolls.models.spell import SPELL_RANKS
 from gabolls.models.suit import SHORT_SUITS, Suit
