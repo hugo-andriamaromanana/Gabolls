@@ -76,7 +76,9 @@ async def submit_player_exchange_valid(player: Player) -> bool:
 
 
 @router.post("/submit_is_spell_played/")
-async def submit_is_spell_played(player: Player, spell_type: SpellType) -> SpellResponse:
+async def submit_is_spell_played(
+    player: Player, spell_type: SpellType
+) -> SpellResponse:
     # Implement the logic to get player if they want to play the spell
     return SpellResponse(False, None)  # Example response
 
@@ -88,6 +90,8 @@ async def submit_player_self_card(player: Player) -> Card:
 
 
 @router.post("/submit_selected_player_card/")
-async def submit_selected_player_card(player: Player, other_players: list[Player]) -> PlayerCard:
+async def submit_selected_player_card(
+    player: Player, other_players: list[Player]
+) -> PlayerCard:
     # Implement the logic to get player to select a card from another player's hand
     return PlayerCard()  # Example response
